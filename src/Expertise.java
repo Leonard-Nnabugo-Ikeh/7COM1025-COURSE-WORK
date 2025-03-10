@@ -4,7 +4,7 @@ public class Expertise {
     public String name;
     public ArrayList<Treatment> treatments;
 
-    public Expertise(String name, String[] treatmentNames) {
+    Expertise(String name, String[] treatmentNames) {
         this.name = name;
         this.treatments = new ArrayList<>();
 
