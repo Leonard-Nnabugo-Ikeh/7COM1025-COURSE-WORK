@@ -1,6 +1,8 @@
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 
+import java.time.LocalDate;
+
 //comments (extra marks)
 public class Main {
 
@@ -13,10 +15,9 @@ public class Main {
         expertise.addTreatment("Another Treatment");
         System.out.println(expertise.treatments.get(1).name);
 
-        Physiotherapist physio = new Physiotherapist("Leonard Ikeh","Some address","+448948576474");
-        Patient patient = new Patient("John Doe","Some other address","+447843685346");
+        ClinicData clinicData = new ClinicData();
 
-        System.out.println("Personnel "+physio.fullName+" is a "+physio.personnelType);
-        System.out.println("Personnel "+patient.fullName+" is a "+patient.personnelType);
+        System.out.println("Personnel "+clinicData.physiotherapists.get(1).fullName+" is a "+clinicData.physiotherapists.get(1).personnelType+", id:"+clinicData.physiotherapists.get(1).id);
+        System.out.println("Personnel "+clinicData.patients.get(1).fullName+" is a "+clinicData.patients.get(1).personnelType+", id:"+clinicData.patients.get(1).id);
     }
 }
