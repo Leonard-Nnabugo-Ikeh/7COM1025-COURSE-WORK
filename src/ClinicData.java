@@ -1,23 +1,59 @@
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class ClinicData {
-    public ArrayList<Physiotherapist> physiotherapists;
-    public ArrayList<Patient> patients;
+    public ArrayList<Physiotherapist> physiotherapists = new ArrayList<>();
+    public ArrayList<Patient> patients = new ArrayList<>();
     public int totalEverNumOfPhysios = 0,totalEverNumOfPatients = 0;
 
     ClinicData() {
-        this.physiotherapists = new ArrayList<>();
-        this.patients = new ArrayList<>();
+        loadMockData();
+    }
 
-        this.physiotherapists.add(new Physiotherapist("Wayne Rooney","2, Wayne Street","+44859837474",totalEverNumOfPhysios));
+    public void addPhysiotherapist(Physiotherapist p) {
+        this.physiotherapists.add(p);
         this.totalEverNumOfPhysios++;
-        this.physiotherapists.add(new Physiotherapist("Diogo Dalot","12, Dalot street","+44859837474",totalEverNumOfPhysios));
-        this.totalEverNumOfPhysios++;
+    }
 
-        this.patients.add(new Patient("Juan Mata","1, Juan Street","+4488479074",totalEverNumOfPatients));
-        this.totalEverNumOfPatients++;
-        this.patients.add(new Patient("Bruno Fernandes","1, Bruno Street","+4488479074",totalEverNumOfPatients));
+    public void addPatient(Patient p) {
+        this.patients.add(p);
         this.totalEverNumOfPatients++;
     }
 
+    private void loadMockData(){
+        String filePath = "src/mock-data.txt";
+
+        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                // Load physiotherapist data
+                if (line.contains("##")) {
+                    String [] infoList = line.split("##")[1].trim().split("/");
+                    String fullName = infoList[0].trim();
+                    String address = infoList[1].trim();
+                    String phone = infoList[2].trim();
+
+                    //create physiotherapist
+                    Physiotherapist physio = new Physiotherapist(fullName,address,phone,totalEverNumOfPhysios);
+
+                    //Get expertise information for physio
+                    String [] expertiseInfoList = infoList[3].trim().split("~~");
+
+                    for(String expertiseInfo : expertiseInfoList){
+                        String[] arr = expertiseInfo.split("~");
+                        String expertiseName = arr[0].trim();
+                        String[] treatmentNames = arr[1].trim().split(",");
+
+                        Expertise expertise = new Expertise(expertiseName,treatmentNames);
+                        physio.addExpertise(expertise);
+                    }
+                    this.addPhysiotherapist(physio);
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

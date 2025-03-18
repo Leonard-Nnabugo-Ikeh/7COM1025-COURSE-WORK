@@ -1,0 +1,17 @@
+Mock Data for BPC
+
+Treatments:
+* Acupuncture
+* Massage
+* Mobilisation of the spine and joints
+* Pool rehabilitation
+
+Expertise:
+* Physiotherapy
+* Osteopathy
+* Rehabilitation
+
+Physiotherapists
+## John Doe / 1, Doe Street, Somewhere / +448060681123 / Physiotherapy ~ Acupuncture,Massage ~~ Osteopathy ~ Mobilisation of the spine and joints,Pool rehabilitation
+## Wayne Rooney / 2, Wayne Street, Somewhere / +44803045129 / Physiotherapy ~ Acupuncture,Massage ~~ Rehabilitation ~ Pool rehabilitation
+## Bruno Fernandes / 3, Bruno Street, Somewhere / +44803648620 / Osteopathy ~ Acupuncture ~~ Rehabilitation ~ Massage
