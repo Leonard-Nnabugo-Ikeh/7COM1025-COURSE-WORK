@@ -2,10 +2,13 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class ClinicData {
     public ArrayList<Physiotherapist> physiotherapists = new ArrayList<>();
     public ArrayList<Patient> patients = new ArrayList<>();
+    public ArrayList<Appointment> appointments = new ArrayList<>();
     public int totalEverNumOfPhysios = 0,totalEverNumOfPatients = 0;
 
     ClinicData() {
@@ -20,6 +23,28 @@ public class ClinicData {
     public void addPatient(Patient p) {
         this.patients.add(p);
         this.totalEverNumOfPatients++;
+    }
+
+    public void bookAppointment(int hour, int day, int week,String patientId, String physioId) {
+        //check if physio is booked in the hour of that day of the week
+        boolean isPhysioBooked = this.appointments.stream().anyMatch(a -> a.hour == hour && a.day == day && a.week == week && Objects.equals(physioId, a.physiotherapist.id) && !Objects.equals(a.status, "CANCELLED"));
+
+        //get list of booked  appointments for the day
+        ArrayList<Appointment> bookedOrAttendedAppointmentsForDaysTime = this.appointments.stream().filter(a ->a.hour == hour &&  a.day == day && a.week == week && !Objects.equals(a.status, "CANCELLED")).collect(Collectors.toCollection(ArrayList::new));
+
+        //if booked appointments for the days time is less than 4, a room is available
+        boolean isRoomAvailable = bookedOrAttendedAppointmentsForDaysTime.size()<4;
+        boolean canBeBooked = !isPhysioBooked && isRoomAvailable;
+
+        if(!canBeBooked) return;
+
+        int room = bookedOrAttendedAppointmentsForDaysTime.size()+1;//rooms get booked incrementally
+
+        Patient pat = this.patients.stream().filter(p -> Objects.equals(p.id, patientId)).toList().getFirst();
+        Physiotherapist physio = this.physiotherapists.stream().filter(p -> Objects.equals(p.id, physioId)).toList().getFirst();
+
+        Appointment apt = new Appointment(hour,day,week,room,pat,physio);
+        this.appointments.add(apt);
     }
 
     private void loadMockData(){
