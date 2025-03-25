@@ -3,8 +3,8 @@ package com.bpc;
 import java.util.ArrayList;
 
 public class Expertise {
-    public String name;
-    public ArrayList<Treatment> treatments;
+    private String name;
+    private ArrayList<Treatment> treatments;
 
     Expertise(String name, String[] treatmentNames) {
         this.name = name;
@@ -13,6 +13,18 @@ public class Expertise {
         for (String names : treatmentNames) {
             this.treatments.add(new Treatment(names));
         }
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public ArrayList<Treatment> getTreatments() {
+        return treatments;
     }
 
     public void addTreatment(String treatmentName){

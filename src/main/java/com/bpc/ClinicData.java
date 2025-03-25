@@ -8,10 +8,10 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class ClinicData {
-    public ArrayList<Physiotherapist> physiotherapists = new ArrayList<>();
-    public ArrayList<Patient> patients = new ArrayList<>();
-    public ArrayList<Appointment> appointments = new ArrayList<>();
-    public int totalEverNumOfPhysios = 0,totalEverNumOfPatients = 0;
+    final ArrayList<Physiotherapist> physiotherapists = new ArrayList<>();
+    final ArrayList<Patient> patients = new ArrayList<>();
+    final ArrayList<Appointment> appointments = new ArrayList<>();
+    private int totalEverNumOfPhysios = 0,totalEverNumOfPatients = 0;
 
     ClinicData() {
         loadMockData();
@@ -27,9 +27,37 @@ public class ClinicData {
         this.totalEverNumOfPatients++;
     }
 
-    public void bookAppointment(int hour, int day, int week,String patientId, String physioId) {
+    public ArrayList<Physiotherapist> getPhysiotherapists() {
+        return physiotherapists;
+    }
+
+    public ArrayList<Patient> getPatients() {
+        return patients;
+    }
+
+    public ArrayList<Appointment> getAppointments() {
+        return appointments;
+    }
+
+    public int getTotalEverNumOfPhysios() {
+        return totalEverNumOfPhysios;
+    }
+
+    public void setTotalEverNumOfPhysios(int totalEverNumOfPhysios) {
+        this.totalEverNumOfPhysios = totalEverNumOfPhysios;
+    }
+
+    public int getTotalEverNumOfPatients() {
+        return totalEverNumOfPatients;
+    }
+
+    public void setTotalEverNumOfPatients(int totalEverNumOfPatients) {
+        this.totalEverNumOfPatients = totalEverNumOfPatients;
+    }
+
+    public void bookAppointment(int hour, int day, int week, String patientId, String physioId) {
         //check if physio is booked in the hour of that day of the week
-        boolean isPhysioBooked = this.appointments.stream().anyMatch(a -> a.hour == hour && a.day == day && a.week == week && Objects.equals(physioId, a.physiotherapist.id) && !Objects.equals(a.status, "CANCELLED"));
+        boolean isPhysioBooked = this.appointments.stream().anyMatch(a -> a.hour == hour && a.day == day && a.week == week && Objects.equals(physioId, a.physiotherapist.getId()) && !Objects.equals(a.status, "CANCELLED"));
 
         //get list of booked  appointments for the day
         ArrayList<Appointment> bookedOrAttendedAppointmentsForDaysTime = this.appointments.stream().filter(a ->a.hour == hour &&  a.day == day && a.week == week && !Objects.equals(a.status, "CANCELLED")).collect(Collectors.toCollection(ArrayList::new));
@@ -42,8 +70,8 @@ public class ClinicData {
 
         int room = bookedOrAttendedAppointmentsForDaysTime.size()+1;//rooms get booked incrementally
 
-        Patient pat = this.patients.stream().filter(p -> Objects.equals(p.id, patientId)).toList().getFirst();
-        Physiotherapist physio = this.physiotherapists.stream().filter(p -> Objects.equals(p.id, physioId)).toList().getFirst();
+        Patient pat = this.patients.stream().filter(p -> Objects.equals(p.getId(), patientId)).toList().getFirst();
+        Physiotherapist physio = this.physiotherapists.stream().filter(p -> Objects.equals(p.getId(), physioId)).toList().getFirst();
 
         Appointment apt = new Appointment(hour,day,week,room,pat,physio);
         this.appointments.add(apt);

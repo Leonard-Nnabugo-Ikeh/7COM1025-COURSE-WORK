@@ -1,9 +1,13 @@
 package com.bpc;
 
 public class Treatment {
-    public String name;
+    private String name;
 
     Treatment(String name) {
         this.name = name;
+    }
+
+    public String getName() {
+        return name;
     }
 }
