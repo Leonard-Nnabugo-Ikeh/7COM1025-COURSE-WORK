@@ -1,3 +1,5 @@
+package com.bpc;
+
 public class Treatment {
     public String name;
 

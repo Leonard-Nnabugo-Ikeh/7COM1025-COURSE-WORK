@@ -1,4 +1,4 @@
-/*
+package com.bpc;/*
 * Possible tests:
 * personnelType can only be: "patient" or "physiotherapist"
 * */

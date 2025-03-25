@@ -1,3 +1,5 @@
+package com.bpc;
+
 public class Appointment {
     public int hour, day, week, room;
     public String status;;
