@@ -9,8 +9,8 @@ public class Physiotherapist extends Personnel{
     private final ArrayList<Treatment> treatments = new ArrayList<>();
     private final ArrayList<Schedule> timetable = new ArrayList<>();
 
-    Physiotherapist(String fullName, String address, String phone,int totalEverNumOfPhysios) {
-        super(fullName, address, phone, "physiotherapist", totalEverNumOfPhysios);
+    Physiotherapist(String fullName, String address, String phone,int physioNumber) {
+        super(fullName, address, phone, "physiotherapist", physioNumber);
 
         //load timetable
         String filePath = "src/main/java/com/bpc/mock-data.txt";

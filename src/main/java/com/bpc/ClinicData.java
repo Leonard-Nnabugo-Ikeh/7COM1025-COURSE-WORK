@@ -4,22 +4,15 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
 public class ClinicData {
     private final ArrayList<Physiotherapist> physiotherapists = new ArrayList<>();
     private final ArrayList<Patient> patients = new ArrayList<>();
     private final ArrayList<Appointment> appointments = new ArrayList<>();
-    private int totalEverNumOfPhysios = 0,totalEverNumOfPatients = 0;
+    private int totalEverNumOfPatients = 0;
 
     ClinicData() {
         loadMockData();
-    }
-
-    public void addPhysiotherapist(Physiotherapist p) {
-        this.physiotherapists.add(p);
-        this.totalEverNumOfPhysios++;
     }
 
     public void addPatient(Patient p) {
@@ -39,14 +32,6 @@ public class ClinicData {
         return appointments;
     }
 
-    public int getTotalEverNumOfPhysios() {
-        return totalEverNumOfPhysios;
-    }
-
-    public void setTotalEverNumOfPhysios(int totalEverNumOfPhysios) {
-        this.totalEverNumOfPhysios = totalEverNumOfPhysios;
-    }
-
     public int getTotalEverNumOfPatients() {
         return totalEverNumOfPatients;
     }
@@ -62,10 +47,12 @@ public class ClinicData {
         String filePath = "src/main/java/com/bpc/mock-data.txt";
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
             String line;
+            int physioNumber = 1;
             while ((line = br.readLine()) != null) {
                 // Load physiotherapist data
                 if (line.contains("##")) {
-                    this.addPhysiotherapist(getPhysioFromTxt(line));
+                    this.physiotherapists.add(getPhysioFromTxt(line,physioNumber));
+                    physioNumber++;
                 }
                 //load patients data
                 if(line.contains("--")){
@@ -77,14 +64,14 @@ public class ClinicData {
         }
     }
 
-    private Physiotherapist getPhysioFromTxt(String line){
+    private Physiotherapist getPhysioFromTxt(String line, int physioNumber) {
         String [] infoList = line.split("##")[1].trim().split("/");
         String fullName = infoList[0].trim();
         String address = infoList[1].trim();
         String phone = infoList[2].trim();
 
         //create physiotherapist instance
-        Physiotherapist physio = new Physiotherapist(fullName,address,phone,totalEverNumOfPhysios);
+        Physiotherapist physio = new Physiotherapist(fullName,address,phone,physioNumber);
 
         //Get expertise information for physio
         String [] expertiseInfoList = infoList[3].trim().split("~~");
