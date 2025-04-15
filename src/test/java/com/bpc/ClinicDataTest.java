@@ -17,6 +17,18 @@ class ClinicDataTest {
 
     @Test
     void getTotalEverNumOfPatients() {
+        System.out.println("addPatient");
+        ClinicData instance = new ClinicData();
+        int expected = instance.getTotalEverNumOfPatients();
+        int actual = 10; // 10 patients get loaded via ClinicData constructor initially
+
+        assertEquals(expected,actual);
+
+        //test when another patient is added
+        instance.addPatient("Abedi Pele","Some address","+44904438373");
+        expected = instance.getTotalEverNumOfPatients();
+        actual = 11;
+        assertEquals(expected,actual);
     }
 
     @Test
