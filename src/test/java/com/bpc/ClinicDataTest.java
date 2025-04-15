@@ -4,9 +4,8 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 class ClinicDataTest {
-
     @Test
-    void addPatient() {
+    void testAddPatient() {
         System.out.println("addPatient");
         ClinicData instance = new ClinicData();
         int totalNumOfPatients = instance.getTotalEverNumOfPatients();
@@ -14,14 +13,6 @@ class ClinicDataTest {
 
         int expected = instance.getTotalEverNumOfPatients();
         assertEquals(expected,totalNumOfPatients+1);
-    }
-
-    @Test
-    void bookAppointment() {
-    }
-
-    @Test
-    void testAddPatient() {
     }
 
     @Test
