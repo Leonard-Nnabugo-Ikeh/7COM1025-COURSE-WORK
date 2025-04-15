@@ -15,8 +15,8 @@ public class ClinicData {
         loadMockData();
     }
 
-    public void addPatient(Patient p) {
-        this.patients.add(p);
+    public void addPatient(String fullName, String address, String phone) {
+        this.patients.add(new Patient(fullName,address,phone,totalEverNumOfPatients));
         this.totalEverNumOfPatients++;
     }
 
@@ -51,12 +51,12 @@ public class ClinicData {
             while ((line = br.readLine()) != null) {
                 // Load physiotherapist data
                 if (line.contains("##")) {
-                    this.physiotherapists.add(getPhysioFromTxt(line,physioNumber));
+                    this.addPhysioFromTxt(line,physioNumber);
                     physioNumber++;
                 }
                 //load patients data
                 if(line.contains("--")){
-                    this.addPatient(getPatientFromTxt(line));
+                    this.addPatientFromTxt(line);
                 }
             }
         } catch (IOException e) {
@@ -64,7 +64,7 @@ public class ClinicData {
         }
     }
 
-    private Physiotherapist getPhysioFromTxt(String line, int physioNumber) {
+    private void addPhysioFromTxt(String line, int physioNumber) {
         String [] infoList = line.split("##")[1].trim().split("/");
         String fullName = infoList[0].trim();
         String address = infoList[1].trim();
@@ -85,15 +85,15 @@ public class ClinicData {
                 physio.addTreatment(treatmentName,expertiseName);
             }
         }
-        return physio;
+        this.physiotherapists.add(physio);
     }
 
-    private Patient getPatientFromTxt(String line){
+    private void addPatientFromTxt(String line){
         String [] infoList = line.split("--")[1].trim().split("/");
         String fullName = infoList[0].trim();
         String address = infoList[1].trim();
         String phone = infoList[2].trim();
 
-        return new Patient(fullName,address,phone,totalEverNumOfPatients);
+        this.addPatient(fullName,address,phone);
     }
 }
