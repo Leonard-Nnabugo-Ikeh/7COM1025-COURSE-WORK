@@ -7,6 +7,6 @@ public class Main {
 
     public static void main(String[] args) {
         ClinicData clinicData = new ClinicData();
-        System.out.println(clinicData.getPhysiotherapists().getFirst().getTimetable().getFirst().getDateTime());
+        System.out.println(clinicData.getPhysiotherapists().getLast().getTreatments().getFirst().getName());
     }
 }

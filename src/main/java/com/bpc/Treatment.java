@@ -12,4 +12,8 @@ public class Treatment {
     public String getName() {
         return name;
     }
+
+    public String getExpertise() {
+        return expertise;
+    }
 }

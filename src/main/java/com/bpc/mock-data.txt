@@ -1,35 +1,80 @@
 Mock Data for BPC
 
 Treatments:
-* Acupuncture
 * Massage
+* Dry needling
+* Exercise prescription
 * Mobilisation of the spine and joints
+* Cranial techniques
+* Soft tissue therapy
 * Pool rehabilitation
+* Resistance training
+* Functional movement training
+* Deep tissue massage
+* Injury prevention
+* Athletic taping
+* Spinal adjustment
+* Postural correction
+* Joint manipulation
+* Gait training
+* Balance therapy
+* Neuro-muscular re-education
 
 Expertise:
 * Physiotherapy
 * Osteopathy
 * Rehabilitation
+* Sports Therapy
+* Chiropractic Care
+* Neurological Rehab
 
 Physiotherapists
-## John Doe / 1, Doe Street, Somewhere / +448060681123 / Physiotherapy ~ Acupuncture,Massage ~~ Osteopathy ~ Mobilisation of the spine and joints,Pool rehabilitation
-## Wayne Rooney / 2, Wayne Street, Somewhere / +44803045129 / Physiotherapy ~ Acupuncture,Massage ~~ Rehabilitation ~ Pool rehabilitation
-## Bruno Fernandes / 3, Bruno Street, Somewhere / +44803648620 / Osteopathy ~ Acupuncture ~~ Rehabilitation ~ Massage
-## Marcus Rashford / 4, Rashford Street, Somewhere / +44803256987 / Physiotherapy ~ Acupuncture,Massage ~~ Osteopathy ~ Mobilisation of the spine and joints,Pool rehabilitation
-## Harry Kane / 5, Kane Street, Somewhere / +44803874512 / Osteopathy ~ Acupuncture ~~ Rehabilitation ~ Pool rehabilitation
+## John Doe / 1, Doe Street, Somewhere / +448060681123 / Physiotherapy ~ Massage,Dry needling,Exercise prescription ~~ Rehabilitation ~ Pool rehabilitation,Resistance training
+## Wayne Rooney / 2, Wayne Street, Somewhere / +44803045129 / Physiotherapy ~ Massage,Dry needling ~~ Sports Therapy ~ Injury prevention,Athletic taping
+## Bruno Fernandes / 3, Bruno Street, Somewhere / +44803648620 / Osteopathy ~ Mobilisation of the spine and joints,Cranial techniques,Soft tissue therapy
+## Marcus Rashford / 4, Rashford Street, Somewhere / +44803256987 / Sports Therapy ~ Deep tissue massage,Athletic taping ~~ Chiropractic Care ~ Spinal adjustment,Joint manipulation
+## Harry Kane / 5, Kane Street, Somewhere / +44803874512 / Chiropractic Care ~ Spinal adjustment,Postural correction,Joint manipulation
+## Phil Foden / 6, Foden Street, Somewhere / +44803678900 / Neurological Rehab ~ Gait training,Balance therapy,Neuro-muscular re-education ~~ Rehabilitation ~ Functional movement training,Resistance training
 
 Patients
 -- Ryan Giggs / 1, Ryan Street, Somewhere / +448073632129
--- Jane Smith / 2 Jane Street, Somewhere / +447987654321
--- Michael Johnson / 3 Michael Street, Somewhere / +447654321987
--- Emily Brown / 4 Emily Street, Somewhere / +447112233445
--- David Wilson / 5 David Street, Somewhere / +447556677889
--- Sarah Taylor / 6 Sarah Street, Somewhere / +447998877665
--- Chris Anderson / 7 Chris Street, Somewhere / +447334455667
--- Jessica Thomas / 8 Jessica Street, Somewhere / +447876543210
--- Daniel White / 9 Daniel Street, Somewhere / +447566778899
--- Laura Harris / 10 Laura Street, Somewhere / +447443322110
+-- Jane Smith / 2, Jane Street, Somewhere / +447987654321
+-- Michael Johnson / 3, Michael Street, Somewhere / +447654321987
+-- Emily Brown / 4, Emily Street, Somewhere / +447112233445
+-- David Wilson / 5, David Street, Somewhere / +447556677889
+-- Sarah Taylor / 6, Sarah Street, Somewhere / +447998877665
+-- Chris Anderson / 7, Chris Street, Somewhere / +447334455667
+-- Jessica Thomas / 8, Jessica Street, Somewhere / +447876543210
+-- Daniel White / 9, Daniel Street, Somewhere / +447566778899
+-- Laura Harris / 10, Laura Street, Somewhere / +447443322110
 
 Timetable
-#- physio-1 / Physiotherapy / Acupuncture / 2025-02-01 10
-#- physio-1 / Physiotherapy / Massage / 2025-03-01 10
+#- physio-1 / Physiotherapy / Massage / 2025-02-03 10
+#- physio-1 / Rehabilitation / Pool rehabilitation / 2025-02-04 14
+#- physio-1 / Physiotherapy / Dry needling / 2025-02-06 09
+#- physio-1 / Rehabilitation / Resistance training / 2025-02-10 11
+
+#- physio-2 / Physiotherapy / Massage / 2025-02-05 13
+#- physio-2 / Sports Therapy / Injury prevention / 2025-02-07 10
+#- physio-2 / Physiotherapy / Dry needling / 2025-02-11 15
+#- physio-2 / Sports Therapy / Athletic taping / 2025-02-14 09
+
+#- physio-3 / Osteopathy / Mobilisation of the spine and joints / 2025-02-04 11
+#- physio-3 / Osteopathy / Cranial techniques / 2025-02-06 15
+#- physio-3 / Osteopathy / Soft tissue therapy / 2025-02-12 10
+#- physio-3 / Osteopathy / Mobilisation of the spine and joints / 2025-02-17 14
+
+#- physio-4 / Sports Therapy / Deep tissue massage / 2025-02-03 11
+#- physio-4 / Chiropractic Care / Spinal adjustment / 2025-02-05 10
+#- physio-4 / Sports Therapy / Athletic taping / 2025-02-10 13
+#- physio-4 / Chiropractic Care / Joint manipulation / 2025-02-13 14
+
+#- physio-5 / Chiropractic Care / Spinal adjustment / 2025-02-06 11
+#- physio-5 / Chiropractic Care / Postural correction / 2025-02-08 12
+#- physio-5 / Chiropractic Care / Joint manipulation / 2025-02-15 09
+#- physio-5 / Chiropractic Care / Spinal adjustment / 2025-02-20 10
+
+#- physio-6 / Neurological Rehab / Gait training / 2025-02-04 09
+#- physio-6 / Rehabilitation / Functional movement training / 2025-02-07 15
+#- physio-6 / Neurological Rehab / Balance therapy / 2025-02-12 11
+#- physio-6 / Rehabilitation / Resistance training / 2025-02-18 13
