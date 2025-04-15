@@ -20,7 +20,7 @@ public class Physiotherapist extends Personnel{
                 if (line.contains("#-")) {
                     String physioId = line.split("#-")[1].trim().split("/")[0].trim();
                     if(physioId.equals(this.getId())){
-                        addSchedule(getScheduleFromTxt(line));
+                        this.addScheduleFromTxt(line);
                     }
                 }
             }
@@ -45,11 +45,11 @@ public class Physiotherapist extends Personnel{
         this.timetable.add(schedule);
     }
 
-    private Schedule getScheduleFromTxt(String line) {
+    private void addScheduleFromTxt(String line) {
         String [] infoList = line.split("#-")[1].trim().split("/");
         Treatment treatment = new Treatment(infoList[2].trim(),infoList[1].trim());
         String dateTime = infoList[3].trim();
 
-        return new Schedule(dateTime, this, treatment);
+        this.timetable.add(new Schedule(dateTime, this.getId(), treatment));
     }
 }

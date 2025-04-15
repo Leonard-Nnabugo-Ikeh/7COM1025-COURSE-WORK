@@ -5,12 +5,12 @@ import java.time.format.DateTimeFormatter;
 
 public class Schedule {
     private String dateTime;
-    private Physiotherapist physiotherapist;
+    private String physioId;
     private Treatment treatment;
 
-    public Schedule(String dateTime, Physiotherapist physiotherapist, Treatment treatment) {
+    public Schedule(String dateTime, String physioId, Treatment treatment) {
         this.dateTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern(dateTime));
-        this.physiotherapist = physiotherapist;
+        this.physioId = physioId;
         this.treatment = treatment;
     }
 
@@ -18,8 +18,8 @@ public class Schedule {
         return dateTime;
     }
 
-    public Physiotherapist getPhysiotherapist() {
-        return physiotherapist;
+    public String getPhysioId() {
+        return physioId;
     }
 
     public Treatment getTreatment() {
