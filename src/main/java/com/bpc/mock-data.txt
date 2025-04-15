@@ -15,6 +15,8 @@ Physiotherapists
 ## John Doe / 1, Doe Street, Somewhere / +448060681123 / Physiotherapy ~ Acupuncture,Massage ~~ Osteopathy ~ Mobilisation of the spine and joints,Pool rehabilitation
 ## Wayne Rooney / 2, Wayne Street, Somewhere / +44803045129 / Physiotherapy ~ Acupuncture,Massage ~~ Rehabilitation ~ Pool rehabilitation
 ## Bruno Fernandes / 3, Bruno Street, Somewhere / +44803648620 / Osteopathy ~ Acupuncture ~~ Rehabilitation ~ Massage
+## Marcus Rashford / 4, Rashford Street, Somewhere / +44803256987 / Physiotherapy ~ Acupuncture,Massage ~~ Osteopathy ~ Mobilisation of the spine and joints,Pool rehabilitation
+## Harry Kane / 5, Kane Street, Somewhere / +44803874512 / Osteopathy ~ Acupuncture ~~ Rehabilitation ~ Pool rehabilitation
 
 Patients
 -- Ryan Giggs / 1, Ryan Street, Somewhere / +448073632129
@@ -27,3 +29,7 @@ Patients
 -- Jessica Thomas / 8 Jessica Street, Somewhere / +447876543210
 -- Daniel White / 9 Daniel Street, Somewhere / +447566778899
 -- Laura Harris / 10 Laura Street, Somewhere / +447443322110
+
+Timetable
+#- physio-1 / Physiotherapy / Acupuncture / 2025-02-01 10
+#- physio-1 / Physiotherapy / Massage / 2025-03-01 10

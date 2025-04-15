@@ -7,10 +7,6 @@ public class Main {
 
     public static void main(String[] args) {
         ClinicData clinicData = new ClinicData();
-        System.out.println(clinicData.getPhysiotherapists().get(2).getExpertise().getFirst().getTreatments().getFirst().getName());
-
-        clinicData.bookAppointment(10,3,2,"patient-2","physio-1");
-        clinicData.bookAppointment(10,3,2,"patient-3","physio-2");
-        System.out.println(clinicData.getAppointments().get(1).room);
+        System.out.println(clinicData.getPhysiotherapists().getFirst().getTimetable().getFirst().getDateTime());
     }
 }

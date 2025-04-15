@@ -8,9 +8,9 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class ClinicData {
-    final ArrayList<Physiotherapist> physiotherapists = new ArrayList<>();
-    final ArrayList<Patient> patients = new ArrayList<>();
-    final ArrayList<Appointment> appointments = new ArrayList<>();
+    private final ArrayList<Physiotherapist> physiotherapists = new ArrayList<>();
+    private final ArrayList<Patient> patients = new ArrayList<>();
+    private final ArrayList<Appointment> appointments = new ArrayList<>();
     private int totalEverNumOfPhysios = 0,totalEverNumOfPatients = 0;
 
     ClinicData() {
@@ -55,26 +55,7 @@ public class ClinicData {
         this.totalEverNumOfPatients = totalEverNumOfPatients;
     }
 
-    public void bookAppointment(int hour, int day, int week, String patientId, String physioId) {
-        //check if physio is booked in the hour of that day of the week
-        boolean isPhysioBooked = this.appointments.stream().anyMatch(a -> a.hour == hour && a.day == day && a.week == week && Objects.equals(physioId, a.physiotherapist.getId()) && !Objects.equals(a.status, "CANCELLED"));
-
-        //get list of booked  appointments for the day
-        ArrayList<Appointment> bookedOrAttendedAppointmentsForDaysTime = this.appointments.stream().filter(a ->a.hour == hour &&  a.day == day && a.week == week && !Objects.equals(a.status, "CANCELLED")).collect(Collectors.toCollection(ArrayList::new));
-
-        //if booked appointments for the days time is less than 4, a room is available
-        boolean isRoomAvailable = bookedOrAttendedAppointmentsForDaysTime.size()<4;
-        boolean canBeBooked = !isPhysioBooked && isRoomAvailable;
-
-        if(!canBeBooked) return;
-
-        int room = bookedOrAttendedAppointmentsForDaysTime.size()+1;//rooms get booked incrementally
-
-        Patient pat = this.patients.stream().filter(p -> Objects.equals(p.getId(), patientId)).toList().getFirst();
-        Physiotherapist physio = this.physiotherapists.stream().filter(p -> Objects.equals(p.getId(), physioId)).toList().getFirst();
-
-        Appointment apt = new Appointment(hour,day,week,room,pat,physio);
-        this.appointments.add(apt);
+    public void bookAppointment() {
     }
 
     private void loadMockData(){
@@ -113,8 +94,9 @@ public class ClinicData {
             String expertiseName = arr[0].trim();
             String[] treatmentNames = arr[1].trim().split(",");
 
-            Expertise expertise = new Expertise(expertiseName,treatmentNames);
-            physio.addExpertise(expertise);
+            for(String treatmentName : treatmentNames){
+                physio.addTreatment(treatmentName,expertiseName);
+            }
         }
         return physio;
     }
