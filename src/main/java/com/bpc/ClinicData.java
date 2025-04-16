@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Optional;
 
 public class ClinicData {
     private final ArrayList<Physiotherapist> physiotherapists = new ArrayList<>();
@@ -36,12 +37,32 @@ public class ClinicData {
         return totalEverNumOfPatients;
     }
 
-    public void setTotalEverNumOfPatients(int totalEverNumOfPatients) {
-        this.totalEverNumOfPatients = totalEverNumOfPatients;
+    public Appointment bookAppointment(String dateTime,String patientId,String physioId) {
+        //check if patient is valid
+        boolean validPatient = this.patients.stream().anyMatch(pat->pat.getId().equals(patientId));
+        if(!validPatient) throw new IllegalArgumentException("Patient is invalid");
+
+        //check if physio is valid
+        Optional<Physiotherapist> physio = this.physiotherapists.stream().filter(p->p.getId().equals(physioId)).findFirst();
+        if(physio.isEmpty()) throw new IllegalArgumentException("Physiotherapist is invalid");
+
+        //check schedule
+        Schedule schedule = physio.get().getSchedule(dateTime);
+        if(schedule==null) throw new IllegalArgumentException("Schedule not available for physiotherapist");
+
+        //check if appointment is booked or attended
+        boolean isBookedOrAttended = this.appointments.stream().anyMatch(a->a.getSchedule().getDateTime().equals(dateTime)&&a.getSchedule().getPhysioId().equals(physioId) && (a.getStatus().equals("BOOKED") || a.getStatus().equals("ATTENDED")));
+        if(isBookedOrAttended) throw new IllegalArgumentException("Appointment already booked or attended");
+
+        Appointment appointment = new Appointment(patientId,schedule); //Appointment instance
+        this.appointments.add(appointment); //add appointment
+
+        return appointment;
     }
 
-    public void bookAppointment() {
-    }
+    public int getTotalNumOfAppointments(){
+        return this.appointments.size();
+    };
 
     private void loadMockData(){
         String filePath = "src/main/java/com/bpc/mock-data.txt";
@@ -85,6 +106,7 @@ public class ClinicData {
                 physio.addTreatment(treatmentName,expertiseName);
             }
         }
+
         this.physiotherapists.add(physio);
     }
 

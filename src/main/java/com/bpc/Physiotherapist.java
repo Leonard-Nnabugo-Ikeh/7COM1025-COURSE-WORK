@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Optional;
 
 public class Physiotherapist extends Personnel{
     private final ArrayList<Treatment> treatments = new ArrayList<>();
@@ -41,8 +42,9 @@ public class Physiotherapist extends Personnel{
         return timetable;
     }
 
-    private void addSchedule(Schedule schedule) {
-        this.timetable.add(schedule);
+    public Schedule getSchedule(String dateTime) {
+        Optional<Schedule> schedule = this.timetable.stream().filter(s->s.getDateTime().equals(dateTime)).findFirst();
+        return schedule.orElse(null);
     }
 
     private void addScheduleFromTxt(String line) {

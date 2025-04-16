@@ -57,7 +57,7 @@ public class Personnel{
 
     private String generatePersonnelId(String personnelType, int totalEverNumOfPersonnel){
          if(personnelType.equals("physiotherapist")){
-             return "physio-"+(totalEverNumOfPersonnel+1);
+             return "physio-"+(totalEverNumOfPersonnel);
          }
          return "patient-"+(totalEverNumOfPersonnel+1);
     }
