@@ -8,26 +8,26 @@ class ClinicDataTest {
     void testAddPatient() {
         System.out.println("addPatient");
         ClinicData instance = new ClinicData();
-        int totalNumOfPatients = instance.getTotalEverNumOfPatients();
+        int numOfPatients = instance.getPatientsSize();
         instance.addPatient("Abedi Pele","Some address","+44904438373");
 
-        int  expected = totalNumOfPatients+1;
-        int result = instance.getTotalEverNumOfPatients();
+        int  expected = numOfPatients+1;
+        int result = instance.getPatientsSize();
         assertEquals(expected,result); //expect total number of patients to increase by 1
     }
 
     @Test
-    void getTotalEverNumOfPatients() {
-        System.out.println("addPatient");
+    void getPatientsSize() {
+        System.out.println("getPatientsSize");
         ClinicData instance = new ClinicData();
-        int result = instance.getTotalEverNumOfPatients();
+        int result = instance.getPatientsSize();
         int expected = 10; // 10 patients get loaded via ClinicData constructor initially
         assertEquals(expected,result); //expect the initial number of patients to be 10
 
         //test when another patient is added
         instance.addPatient("Abedi Pele","Some address","+44904438373");
         expected++; //Number of patients should increase by 1
-        result = instance.getTotalEverNumOfPatients();
+        result = instance.getPatientsSize();
         assertEquals(expected,result);
     }
 
@@ -35,12 +35,12 @@ class ClinicDataTest {
     void testBookAppointment() {
         System.out.println("bookAppointment");
         ClinicData instance = new ClinicData();
-        int totalNumOfAppointments = instance.getTotalNumOfAppointments();
+        int totalNumOfAppointments = instance.getAppointmentsSize();
 
         instance.bookAppointment("2025-02-03 10","patient-1","physio-1");
 
         int  expected = totalNumOfAppointments+1;
-        int result = instance.getTotalNumOfAppointments();
+        int result = instance.getAppointmentsSize();
         assertEquals(expected,result); //passes of appointment got booked
 
         //Test when an invalid patient id is passed
@@ -69,15 +69,15 @@ class ClinicDataTest {
     }
 
     @Test
-    void getTotalNumOfAppointments() {
-        System.out.println("getTotalNumOfAppointments");
+    void getAppointmentsSize() {
+        System.out.println("getAppointmentsSize");
         ClinicData instance = new ClinicData();
-        int actual = instance.getTotalNumOfAppointments();
+        int actual = instance.getAppointmentsSize();
         int expected = 0;
         assertEquals(expected,actual);
 
         instance.bookAppointment("2025-02-03 10","patient-1","physio-1");
-        actual = instance.getTotalNumOfAppointments();
+        actual = instance.getAppointmentsSize();
         expected = 1;
         assertEquals(expected,actual);
     }

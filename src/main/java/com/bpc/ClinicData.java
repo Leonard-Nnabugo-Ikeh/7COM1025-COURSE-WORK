@@ -22,6 +22,14 @@ public class ClinicData {
         this.totalEverNumOfPatients++;
     }
 
+    public int getPatientsSize(){
+        return this.patients.size();
+    }
+
+    public int getAppointmentsSize(){
+        return this.appointments.size();
+    }
+
     public ArrayList<Appointment> getPatientAppointments(String patientId) {
         return this.appointments.stream().filter(appointment -> appointment.getPatientId().equals(patientId)).collect(Collectors.toCollection((ArrayList::new)));
     }
@@ -41,10 +49,6 @@ public class ClinicData {
     public int getTotalEverNumOfPatients() {
         return totalEverNumOfPatients;
     }
-
-    public int getTotalNumOfAppointments(){
-        return this.appointments.size();
-    };
 
     public Appointment bookAppointment(String dateTime,String patientId,String physioId) {
         //check if patient is valid
