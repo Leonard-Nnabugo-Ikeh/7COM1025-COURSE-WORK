@@ -70,5 +70,15 @@ class ClinicDataTest {
 
     @Test
     void getTotalNumOfAppointments() {
+        System.out.println("getTotalNumOfAppointments");
+        ClinicData instance = new ClinicData();
+        int actual = instance.getTotalNumOfAppointments();
+        int expected = 0;
+        assertEquals(expected,actual);
+
+        instance.bookAppointment("2025-02-03 10","patient-1","physio-1");
+        actual = instance.getTotalNumOfAppointments();
+        expected = 1;
+        assertEquals(expected,actual);
     }
 }
