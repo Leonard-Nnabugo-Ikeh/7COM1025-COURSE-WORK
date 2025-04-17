@@ -58,6 +58,14 @@ class ClinicDataTest {
         //test when the schedule has already been booked or attended
         IllegalArgumentException ex4 = assertThrows(IllegalArgumentException.class,()-> instance.bookAppointment("2025-02-03 10","patient-2","physio-1")); //this was already booked by patient-1 in our first edge-case
         assertEquals("Appointment already booked or attended", ex4.getMessage());
+
+        //test when patient tries to book the same appointment twice
+        IllegalArgumentException ex5 = assertThrows(IllegalArgumentException.class,()-> instance.bookAppointment("2025-02-03 10","patient-1","physio-1"));
+        assertEquals("Appointment already booked or attended", ex5.getMessage());
+
+        //test when patient tries to book another appointment at the same date and time
+        IllegalArgumentException ex6 = assertThrows(IllegalArgumentException.class,()-> instance.bookAppointment("2025-02-03 10","patient-1","physio-3")); //patient 1 tries to book another appointment at the same date and time
+        assertEquals("Patient already booked for an appointment at chosen time", ex6.getMessage());
     }
 
     @Test

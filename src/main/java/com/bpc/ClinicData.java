@@ -10,7 +10,7 @@ public class ClinicData {
     private final ArrayList<Physiotherapist> physiotherapists = new ArrayList<>();
     private final ArrayList<Patient> patients = new ArrayList<>();
     private final ArrayList<Appointment> appointments = new ArrayList<>();
-    private int totalEverNumOfPatients = 0;
+    private int totalEverNumOfPatients = 0, totalEverNumOfAppointments = 0;
 
     ClinicData() {
         loadMockData();
@@ -54,8 +54,13 @@ public class ClinicData {
         boolean isBookedOrAttended = this.appointments.stream().anyMatch(a->a.getSchedule().getDateTime().equals(dateTime)&&a.getSchedule().getPhysioId().equals(physioId) && (a.getStatus().equals("BOOKED") || a.getStatus().equals("ATTENDED")));
         if(isBookedOrAttended) throw new IllegalArgumentException("Appointment already booked or attended");
 
-        Appointment appointment = new Appointment(patientId,schedule); //Appointment instance
+        //check if patient has already booked an appointment at that specific time of the date
+        boolean patientBookedAtDatetime = this.appointments.stream().anyMatch(a->a.getPatientId().equals(patientId) && a.getSchedule().getDateTime().equals(dateTime) && (a.getStatus().equals("BOOKED") || a.getStatus().equals("ATTENDED")));
+        if(patientBookedAtDatetime) throw new IllegalArgumentException("Patient already booked for an appointment at chosen time");
+
+        Appointment appointment = new Appointment(patientId,schedule,totalEverNumOfAppointments); //Appointment instance
         this.appointments.add(appointment); //add appointment
+        this.totalEverNumOfAppointments++;
 
         return appointment;
     }

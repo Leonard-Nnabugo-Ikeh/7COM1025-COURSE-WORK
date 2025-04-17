@@ -59,7 +59,7 @@ Timetable
 #- physio-2 / Physiotherapy / Dry needling / 2025-02-11 15
 #- physio-2 / Sports Therapy / Athletic taping / 2025-02-14 09
 
-#- physio-3 / Osteopathy / Mobilisation of the spine and joints / 2025-02-04 11
+#- physio-3 / Osteopathy / Mobilisation of the spine and joints / 2025-02-03 10
 #- physio-3 / Osteopathy / Cranial techniques / 2025-02-06 15
 #- physio-3 / Osteopathy / Soft tissue therapy / 2025-02-12 10
 #- physio-3 / Osteopathy / Mobilisation of the spine and joints / 2025-02-17 14

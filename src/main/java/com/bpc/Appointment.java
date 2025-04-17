@@ -1,11 +1,13 @@
 package com.bpc;
 
 public class Appointment {
+    private final String bookingId;
     private String status;
     private String patientId;
     private Schedule schedule;
 
-    public Appointment(String patientId,Schedule schedule) {
+    public Appointment(String patientId,Schedule schedule, int totalEverNumOfAppointments) {
+        this.bookingId = "booking-"+(totalEverNumOfAppointments+1);
         this.schedule = schedule;
         this.patientId = patientId;
         this.status = "BOOKED";
@@ -33,5 +35,9 @@ public class Appointment {
 
     public void setSchedule(Schedule schedule) {
         this.schedule = schedule;
+    }
+
+    public String getBookingId() {
+        return bookingId;
     }
 }
