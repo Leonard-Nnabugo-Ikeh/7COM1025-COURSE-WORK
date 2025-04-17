@@ -81,4 +81,20 @@ class ClinicDataTest {
         expected = 1;
         assertEquals(expected,actual);
     }
+
+    @Test
+    void getPatientAppointments() {
+        System.out.println("getPatientAppointments");
+        ClinicData instance = new ClinicData();
+
+        instance.addPatient("Abedi Pele","Some address","+44904438373");
+        int actual = instance.getPatientAppointments("patient-1").size();
+        int expected = 0;
+        assertEquals(expected,actual);
+
+        instance.bookAppointment("2025-02-03 10","patient-1","physio-3");
+        actual = instance.getPatientAppointments("patient-1").size();
+        expected = 1;
+        assertEquals(expected,actual);
+    }
 }

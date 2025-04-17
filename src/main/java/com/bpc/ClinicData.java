@@ -5,6 +5,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class ClinicData {
     private final ArrayList<Physiotherapist> physiotherapists = new ArrayList<>();
@@ -19,6 +20,10 @@ public class ClinicData {
     public void addPatient(String fullName, String address, String phone) {
         this.patients.add(new Patient(fullName,address,phone,totalEverNumOfPatients));
         this.totalEverNumOfPatients++;
+    }
+
+    public ArrayList<Appointment> getPatientAppointments(String patientId) {
+        return this.appointments.stream().filter(appointment -> appointment.getPatientId().equals(patientId)).collect(Collectors.toCollection((ArrayList::new)));
     }
 
     public ArrayList<Physiotherapist> getPhysiotherapists() {
@@ -36,6 +41,10 @@ public class ClinicData {
     public int getTotalEverNumOfPatients() {
         return totalEverNumOfPatients;
     }
+
+    public int getTotalNumOfAppointments(){
+        return this.appointments.size();
+    };
 
     public Appointment bookAppointment(String dateTime,String patientId,String physioId) {
         //check if patient is valid
@@ -64,10 +73,6 @@ public class ClinicData {
 
         return appointment;
     }
-
-    public int getTotalNumOfAppointments(){
-        return this.appointments.size();
-    };
 
     private void loadMockData(){
         String filePath = "src/main/java/com/bpc/mock-data.txt";
