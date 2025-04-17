@@ -22,6 +22,17 @@ public class ClinicData {
         this.totalEverNumOfPatients++;
     }
 
+    public void removePatient(String patientId) {
+        //cancel patients appointments
+        this.appointments.forEach(a->{
+            if(a.getPatientId().equals(patientId)){
+                a.setStatus("CANCELLED");
+            };
+        });
+        //remove patient
+        this.patients.removeIf(p->p.getId().equals(patientId));
+    }
+
     public int getPatientsSize(){
         return this.patients.size();
     }

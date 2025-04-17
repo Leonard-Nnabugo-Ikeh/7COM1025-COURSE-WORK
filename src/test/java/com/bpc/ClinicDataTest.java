@@ -2,6 +2,8 @@ package com.bpc;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+
 import static org.junit.jupiter.api.Assertions.*;
 class ClinicDataTest {
     @Test
@@ -11,13 +13,37 @@ class ClinicDataTest {
         int numOfPatients = instance.getPatientsSize();
         instance.addPatient("Abedi Pele","Some address","+44904438373");
 
-        int  expected = numOfPatients+1;
+        int  expected = numOfPatients+1; //expect total number of patients to increase by 1
         int result = instance.getPatientsSize();
-        assertEquals(expected,result); //expect total number of patients to increase by 1
+        assertEquals(expected,result);
     }
 
     @Test
-    void getPatientsSize() {
+    void testRemovePatient() {
+        System.out.println("removePatient");
+        ClinicData instance = new ClinicData();
+        int numOfPatients = instance.getPatientsSize();
+        instance.bookAppointment("2025-02-03 10","patient-1","physio-1");
+        instance.removePatient("patient-1");
+
+        int expected = numOfPatients-1; //expect total number of patients to decrease by 1
+        int result = instance.getPatientsSize();
+        assertEquals(expected,result);
+
+        //check if patients appointments remain
+        ArrayList<Appointment> patientAppointments = instance.getPatientAppointments("patient-1");
+        expected = 1;
+        result = patientAppointments.size();
+        assertEquals(expected,result);
+
+        //check if all patients appointments are cancelled
+        patientAppointments.forEach(a->{
+            assertEquals("CANCELLED", a.getStatus());
+        });
+    }
+
+    @Test
+    void testGetPatientsSize() {
         System.out.println("getPatientsSize");
         ClinicData instance = new ClinicData();
         int result = instance.getPatientsSize();
@@ -39,7 +65,7 @@ class ClinicDataTest {
 
         instance.bookAppointment("2025-02-03 10","patient-1","physio-1");
 
-        int  expected = totalNumOfAppointments+1;
+        int expected = totalNumOfAppointments+1;
         int result = instance.getAppointmentsSize();
         assertEquals(expected,result); //passes of appointment got booked
 
@@ -69,32 +95,31 @@ class ClinicDataTest {
     }
 
     @Test
-    void getAppointmentsSize() {
+    void testGetAppointmentsSize() {
         System.out.println("getAppointmentsSize");
         ClinicData instance = new ClinicData();
-        int actual = instance.getAppointmentsSize();
+        int result = instance.getAppointmentsSize();
         int expected = 0;
-        assertEquals(expected,actual);
+        assertEquals(expected,result);
 
         instance.bookAppointment("2025-02-03 10","patient-1","physio-1");
-        actual = instance.getAppointmentsSize();
+        result = instance.getAppointmentsSize();
         expected = 1;
-        assertEquals(expected,actual);
+        assertEquals(expected,result);
     }
 
     @Test
-    void getPatientAppointments() {
+    void testGetPatientAppointments() {
         System.out.println("getPatientAppointments");
         ClinicData instance = new ClinicData();
 
-        instance.addPatient("Abedi Pele","Some address","+44904438373");
-        int actual = instance.getPatientAppointments("patient-1").size();
+        int result = instance.getPatientAppointments("patient-1").size();
         int expected = 0;
-        assertEquals(expected,actual);
+        assertEquals(expected,result);
 
         instance.bookAppointment("2025-02-03 10","patient-1","physio-3");
-        actual = instance.getPatientAppointments("patient-1").size();
+        result = instance.getPatientAppointments("patient-1").size();
         expected = 1;
-        assertEquals(expected,actual);
+        assertEquals(expected,result);
     }
 }
