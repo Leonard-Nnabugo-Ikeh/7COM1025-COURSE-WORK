@@ -19,6 +19,20 @@ class ClinicDataTest {
     }
 
     @Test
+    void testGetPatient(){
+        System.out.println("getPatient");
+        ClinicData instance = new ClinicData();
+
+        Patient pat = instance.addPatient("Abedi Pele","Some address","+44904438373");
+        Patient getPat = instance.getPatient(pat.getId());
+
+        assertEquals(pat.getId(),getPat.getId());
+
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,()->instance.getPatient("incorrectId"));
+        assertEquals("Patient is invalid",ex.getMessage());
+    }
+
+    @Test
     void testRemovePatient() {
         System.out.println("removePatient");
         ClinicData instance = new ClinicData();
@@ -92,6 +106,20 @@ class ClinicDataTest {
         //test when patient tries to book another appointment at the same date and time
         IllegalArgumentException ex6 = assertThrows(IllegalArgumentException.class,()-> instance.bookAppointment("2025-02-03 10","patient-1","physio-3")); //patient 1 tries to book another appointment at the same date and time
         assertEquals("Patient already booked for an appointment at chosen time", ex6.getMessage());
+    }
+
+    @Test
+    void testGetAppointment() {
+        System.out.println("getAppointment");
+        ClinicData instance = new ClinicData();
+
+        Appointment apt = instance.bookAppointment("2025-02-03 10","patient-1","physio-1");
+        Appointment getApt = instance.getAppointment(apt.getBookingId());
+
+        assertEquals(apt.getBookingId(),getApt.getBookingId());
+
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,()-> instance.getAppointment("incorrectId"));
+        assertEquals("Appointment is invalid", ex.getMessage());
     }
 
     @Test

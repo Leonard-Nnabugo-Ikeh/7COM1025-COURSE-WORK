@@ -17,10 +17,18 @@ public class ClinicData {
         loadMockData();
     }
 
-    public void addPatient(String fullName, String address, String phone) {
-        this.patients.add(new Patient(fullName,address,phone,totalEverNumOfPatients));
+    public Patient getPatient(String patientId){
+        Optional<Patient> pat = this.patients.stream().filter(p -> p.getId().equals(patientId)).findFirst();
+        if(pat.isEmpty()) throw new IllegalArgumentException("Patient is invalid");
+        return pat.get();
+    };
+
+    public Patient addPatient(String fullName, String address, String phone) {
+        Patient pat = new Patient(fullName,address,phone,totalEverNumOfPatients);
+        this.patients.add(pat);
         this.totalEverNumOfPatients++;
-    }
+        return pat;
+    };
 
     public void removePatient(String patientId) {
         //cancel patients appointments
@@ -60,6 +68,12 @@ public class ClinicData {
     public int getTotalEverNumOfPatients() {
         return totalEverNumOfPatients;
     }
+
+    public Appointment getAppointment(String bookingId){
+        Optional<Appointment> apt = this.appointments.stream().filter(a -> a.getBookingId().equals(bookingId)).findFirst();
+        if(apt.isEmpty()) throw new IllegalArgumentException("Appointment is invalid");
+        return apt.get();
+    };
 
     public Appointment bookAppointment(String dateTime,String patientId,String physioId) {
         //check if patient is valid
