@@ -76,9 +76,7 @@ public class ClinicData {
     };
 
     public Appointment getAppointment(String bookingId){
-        Optional<Appointment> apt = this.appointments.stream().filter(a -> a.getBookingId().equals(bookingId)).findFirst();
-        if(apt.isEmpty()) throw new IllegalArgumentException("Appointment is invalid");
-        return apt.get();
+       return this.appointments.stream().filter(a->a.getBookingId().equals(bookingId)).findFirst().orElseThrow(()->new IllegalArgumentException("Appointment is invalid"));
     };
 
     public Appointment bookAppointment(String dateTime,String patientId,String physioId) {
@@ -104,6 +102,18 @@ public class ClinicData {
         this.totalEverNumOfAppointments++;
 
         return appointment;
+    }
+
+    public void cancelAppointment(String bookingId, String patientId) {
+        Appointment apt = getAppointment(bookingId);
+
+        if(!apt.getPatientId().equals(patientId)) throw new IllegalArgumentException("Unauthorized");
+        if(apt.getStatus().equals("CANCELLED")) throw new IllegalArgumentException("Appointment already cancelled");
+        if(apt.getStatus().equals("ATTENDED")) throw new IllegalArgumentException("Appointment already attended");
+
+        this.appointments.forEach(a->{
+            if(a.getBookingId().equals(bookingId)) a.setStatus("CANCELLED");
+        });
     }
 
     private void loadMockData(){

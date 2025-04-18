@@ -112,6 +112,24 @@ class ClinicDataTest {
     }
 
     @Test
+    void testCancelAppointment() {
+        System.out.println("cancelAppointment");
+        ClinicData instance = new ClinicData();
+
+        Appointment apt = instance.bookAppointment("2025-02-03 10","patient-1","physio-1"); //book appointment first
+        instance.cancelAppointment(apt.getBookingId(),apt.getPatientId()); //cancel the same appointment
+
+        Appointment getApt = instance.getAppointment(apt.getBookingId());
+        String result = getApt.getStatus();
+        String expected = "CANCELLED";
+        assertEquals(expected,result);
+
+        //Test when patient tries to cancel already cancelled appointment
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,()-> instance.cancelAppointment(apt.getBookingId(),apt.getPatientId()));
+        assertEquals("Appointment already cancelled", ex.getMessage());
+    }
+
+    @Test
     void testGetAppointment() {
         System.out.println("getAppointment");
         ClinicData instance = new ClinicData();
