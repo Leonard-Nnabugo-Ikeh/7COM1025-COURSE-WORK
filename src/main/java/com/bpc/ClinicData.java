@@ -12,15 +12,14 @@ public class ClinicData {
     private final ArrayList<Patient> patients = new ArrayList<>();
     private final ArrayList<Appointment> appointments = new ArrayList<>();
     private int totalEverNumOfPatients = 0, totalEverNumOfAppointments = 0;
+    private final Validation validation = new Validation();
 
     ClinicData() {
         loadMockData();
     }
 
     public Patient getPatient(String patientId){
-        Optional<Patient> pat = this.patients.stream().filter(p -> p.getId().equals(patientId)).findFirst();
-        if(pat.isEmpty()) throw new IllegalArgumentException("Patient is invalid");
-        return pat.get();
+        return this.patients.stream().filter(p->p.getId().equals(patientId)).findFirst().orElseThrow(()->new IllegalArgumentException("Patient is invalid"));
     };
 
     public Patient addPatient(String fullName, String address, String phone) {
@@ -31,12 +30,15 @@ public class ClinicData {
     };
 
     public void removePatient(String patientId) {
+        if(!validation.isPatientValid(this.patients,patientId))throw new IllegalArgumentException("Patient is invalid");
+
         //cancel patients appointments
         this.appointments.forEach(a->{
             if(a.getPatientId().equals(patientId)){
                 a.setStatus("CANCELLED");
             };
         });
+
         //remove patient
         this.patients.removeIf(p->p.getId().equals(patientId));
     }
@@ -69,6 +71,10 @@ public class ClinicData {
         return totalEverNumOfPatients;
     }
 
+    public Physiotherapist getPhysiotherapist(String physioId){
+        return this.physiotherapists.stream().filter(p->p.getId().equals(physioId)).findFirst().orElseThrow(()->new IllegalArgumentException("Physiotherapist is invalid"));
+    };
+
     public Appointment getAppointment(String bookingId){
         Optional<Appointment> apt = this.appointments.stream().filter(a -> a.getBookingId().equals(bookingId)).findFirst();
         if(apt.isEmpty()) throw new IllegalArgumentException("Appointment is invalid");
@@ -77,23 +83,20 @@ public class ClinicData {
 
     public Appointment bookAppointment(String dateTime,String patientId,String physioId) {
         //check if patient is valid
-        boolean validPatient = this.patients.stream().anyMatch(pat->pat.getId().equals(patientId));
-        if(!validPatient) throw new IllegalArgumentException("Patient is invalid");
+        if(!validation.isPatientValid(this.patients,patientId)) throw new IllegalArgumentException("Patient is invalid");
 
-        //check if physio is valid
-        Optional<Physiotherapist> physio = this.physiotherapists.stream().filter(p->p.getId().equals(physioId)).findFirst();
-        if(physio.isEmpty()) throw new IllegalArgumentException("Physiotherapist is invalid");
+        Physiotherapist physio = getPhysiotherapist(physioId); //throws exception if physio is invalid
 
         //check schedule
-        Schedule schedule = physio.get().getSchedule(dateTime);
+        Schedule schedule = physio.getSchedule(dateTime);
         if(schedule==null) throw new IllegalArgumentException("Schedule not available for physiotherapist");
 
         //check if appointment is booked or attended
-        boolean isBookedOrAttended = this.appointments.stream().anyMatch(a->a.getSchedule().getDateTime().equals(dateTime)&&a.getSchedule().getPhysioId().equals(physioId) && (a.getStatus().equals("BOOKED") || a.getStatus().equals("ATTENDED")));
+        boolean isBookedOrAttended = validation.appointmentIsBookedOrAttended(this.appointments,dateTime,physioId);
         if(isBookedOrAttended) throw new IllegalArgumentException("Appointment already booked or attended");
 
         //check if patient has already booked an appointment at that specific time of the date
-        boolean patientBookedAtDatetime = this.appointments.stream().anyMatch(a->a.getPatientId().equals(patientId) && a.getSchedule().getDateTime().equals(dateTime) && (a.getStatus().equals("BOOKED") || a.getStatus().equals("ATTENDED")));
+        boolean patientBookedAtDatetime = validation.patientIsBookedAtDatetime(this.appointments,patientId,dateTime);
         if(patientBookedAtDatetime) throw new IllegalArgumentException("Patient already booked for an appointment at chosen time");
 
         Appointment appointment = new Appointment(patientId,schedule,totalEverNumOfAppointments); //Appointment instance

@@ -54,6 +54,9 @@ class ClinicDataTest {
         patientAppointments.forEach(a->{
             assertEquals("CANCELLED", a.getStatus());
         });
+
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,()->instance.removePatient("incorrectId"));
+        assertEquals("Patient is invalid",ex.getMessage());
     }
 
     @Test
