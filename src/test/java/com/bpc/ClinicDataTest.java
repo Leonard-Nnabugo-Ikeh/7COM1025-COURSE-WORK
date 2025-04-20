@@ -162,6 +162,22 @@ class ClinicDataTest {
     }
 
     @Test
+    void testChangeAppointment() {
+        System.out.println("changeAppointment");
+        ClinicData instance = new ClinicData();
+
+        Appointment apt = instance.bookAppointment("2025-02-03 10","patient-1","physio-1"); //book appointment first
+        Appointment changeApt = instance.changeAppointment(apt.getBookingId(),"patient-1","2025-02-04 14","physio-1"); //change apt
+
+        Appointment oldApt = instance.getAppointment(apt.getBookingId());
+        String expected = "CANCELLED"; //expect old appointment to be cancelled
+        assertEquals(expected,oldApt.getStatus());
+
+        expected = "BOOKED"; //expect new appointment to be booked
+        assertEquals(expected,changeApt.getStatus());
+    }
+
+    @Test
     void testGetAppointment() {
         System.out.println("getAppointment");
         ClinicData instance = new ClinicData();

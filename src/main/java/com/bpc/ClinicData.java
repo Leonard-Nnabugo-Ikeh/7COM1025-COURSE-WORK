@@ -78,8 +78,7 @@ public class ClinicData {
        return this.appointments.stream().filter(a->a.getBookingId().equals(bookingId)).findFirst().orElseThrow(()->new IllegalArgumentException("Appointment is invalid"));
     }
 
-    public Appointment bookAppointment(String dateTime,String patientId,String physioId) {
-        //check if patient is valid
+    public Schedule getScheduleForBooking(String patientId, String dateTime, String physioId) {
         if(!validation.isPatientValid(this.patients,patientId)) throw new IllegalArgumentException("Patient is invalid");
 
         Physiotherapist physio = getPhysiotherapist(physioId); //throws exception if physio is invalid
@@ -96,6 +95,12 @@ public class ClinicData {
         boolean patientBookedAtDatetime = validation.patientIsBookedAtDatetime(this.appointments,patientId,dateTime);
         if(patientBookedAtDatetime) throw new IllegalArgumentException("Patient already booked for an appointment at chosen time");
 
+        return schedule;
+    }
+
+    public Appointment bookAppointment(String dateTime,String patientId,String physioId) {
+        Schedule schedule = this.getScheduleForBooking(patientId,dateTime,physioId);
+
         Appointment appointment = new Appointment(patientId,schedule,totalEverNumOfAppointments); //Appointment instance
         this.appointments.add(appointment); //add appointment
         this.totalEverNumOfAppointments++;
@@ -104,6 +109,7 @@ public class ClinicData {
     }
 
     public void cancelAppointment(String bookingId, String patientId) {
+        if(!validation.isPatientValid(this.patients,patientId)) throw new IllegalArgumentException("Patient is invalid");
         Appointment apt = getAppointment(bookingId);
 
         if(!apt.getPatientId().equals(patientId)) throw new IllegalArgumentException("Unauthorized");
@@ -116,6 +122,7 @@ public class ClinicData {
     }
 
     public void attendAppointment(String bookingId, String patientId) {
+        if(!validation.isPatientValid(this.patients,patientId)) throw new IllegalArgumentException("Patient is invalid");
         Appointment apt = getAppointment(bookingId);
 
         if(!apt.getPatientId().equals(patientId)) throw new IllegalArgumentException("Unauthorized");
@@ -125,6 +132,18 @@ public class ClinicData {
         this.appointments.forEach(a->{
             if(a.getBookingId().equals(bookingId)) a.setStatus("ATTENDED");
         });
+    }
+
+    public Appointment changeAppointment(String oldBookingId, String patientId, String newAptDatetime, String newAptPhysioId) {
+        Schedule schedule = this.getScheduleForBooking(patientId,newAptDatetime,newAptPhysioId);
+
+        cancelAppointment(oldBookingId,patientId);
+
+        Appointment appointment = new Appointment(patientId,schedule,totalEverNumOfAppointments);
+        this.appointments.add(appointment); //add appointment
+        this.totalEverNumOfAppointments++;
+
+        return appointment;
     }
 
     private void loadMockData(){
