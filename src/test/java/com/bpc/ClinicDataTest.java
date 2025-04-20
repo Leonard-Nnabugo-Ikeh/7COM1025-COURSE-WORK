@@ -192,6 +192,29 @@ class ClinicDataTest {
     }
 
     @Test
+    void getAvailableAppointmentsByExpertise(){
+        System.out.println("getAvailableAppointmentsByExpertise");
+        ClinicData instance = new ClinicData();
+
+        ArrayList<Schedule> availableApts = instance.getAvailableAppointmentsByExpertise("Physiotherapy");
+        int expected = 4; //initially 4 available appointments for physiotherapy expertise
+        int result = availableApts.size();
+        assertEquals(expected,result);
+
+        Appointment bookedApt = instance.bookAppointment("2025-02-03 10","patient-1","physio-1"); //book an appointment under physiotherapy
+        ArrayList<Schedule> newAvailableApts = instance.getAvailableAppointmentsByExpertise("Physiotherapy");
+        expected = 3; //after booking number of available appointments should reduce by 1
+        result = newAvailableApts.size();
+        assertEquals(expected,result);
+
+        instance.cancelAppointment(bookedApt.getBookingId(),bookedApt.getPatientId()); //cancel booked appointment
+        ArrayList<Schedule> newAvailableApts2 = instance.getAvailableAppointmentsByExpertise("Physiotherapy");
+        expected = 4; //after canceling, the appointment should be freed up
+        result = newAvailableApts2.size();
+        assertEquals(expected,result);
+    }
+
+    @Test
     void testGetAppointmentsSize() {
         System.out.println("getAppointmentsSize");
         ClinicData instance = new ClinicData();

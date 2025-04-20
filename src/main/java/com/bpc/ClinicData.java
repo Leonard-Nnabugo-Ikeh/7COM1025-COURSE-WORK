@@ -74,10 +74,6 @@ public class ClinicData {
         return this.physiotherapists.stream().filter(p->p.getId().equals(physioId)).findFirst().orElseThrow(()->new IllegalArgumentException("Physiotherapist is invalid"));
     }
 
-    public Appointment getAppointment(String bookingId){
-       return this.appointments.stream().filter(a->a.getBookingId().equals(bookingId)).findFirst().orElseThrow(()->new IllegalArgumentException("Appointment is invalid"));
-    }
-
     public Schedule getScheduleForBooking(String patientId, String dateTime, String physioId) {
         if(!validation.isPatientValid(this.patients,patientId)) throw new IllegalArgumentException("Patient is invalid");
 
@@ -96,6 +92,28 @@ public class ClinicData {
         if(patientBookedAtDatetime) throw new IllegalArgumentException("Patient already booked for an appointment at chosen time");
 
         return schedule;
+    }
+
+    public Appointment getAppointment(String bookingId){
+        return this.appointments.stream().filter(a->a.getBookingId().equals(bookingId)).findFirst().orElseThrow(()->new IllegalArgumentException("Appointment is invalid"));
+    }
+
+    public Appointment getAppointment(String dateTime, String physioId){
+        return this.appointments.stream().filter(a->a.getSchedule().getDateTime().equals(dateTime)).findFirst().orElseThrow(()->new IllegalArgumentException("Appointment is invalid"));
+    }
+
+    public ArrayList<Schedule> getAvailableAppointmentsByExpertise(String expertise) {
+        ArrayList<Schedule> schedules = new ArrayList<>();
+
+        physiotherapists.forEach(p->{
+            p.getTimetable().forEach(s->{
+                if(!validation.appointmentIsBookedOrAttended(this.appointments,s.getDateTime(),s.getPhysioId()) && s.getTreatment().getExpertise().equalsIgnoreCase(expertise)) {
+                    schedules.add(s);
+                }
+            });
+        });
+
+        return schedules;
     }
 
     public Appointment bookAppointment(String dateTime,String patientId,String physioId) {
