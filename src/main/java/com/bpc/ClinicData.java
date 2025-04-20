@@ -116,6 +116,20 @@ public class ClinicData {
         return schedules;
     }
 
+    public ArrayList<Schedule> getAvailableAppointmentsByPhysiotherapistName(String physioFullname) {
+        ArrayList<Schedule> schedules = new ArrayList<>();
+
+        physiotherapists.forEach(p->{
+            p.getTimetable().forEach(s->{
+                if(!validation.appointmentIsBookedOrAttended(this.appointments,s.getDateTime(),s.getPhysioId()) && p.getFullName().equalsIgnoreCase(physioFullname)) {
+                    schedules.add(s);
+                }
+            });
+        });
+
+        return schedules;
+    }
+
     public Appointment bookAppointment(String dateTime,String patientId,String physioId) {
         Schedule schedule = this.getScheduleForBooking(patientId,dateTime,physioId);
 
