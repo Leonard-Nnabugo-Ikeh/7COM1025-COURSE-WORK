@@ -51,9 +51,7 @@ class ClinicDataTest {
         assertEquals(expected,result);
 
         //check if all patients appointments are cancelled
-        patientAppointments.forEach(a->{
-            assertEquals("CANCELLED", a.getStatus());
-        });
+        patientAppointments.forEach(a->assertEquals("CANCELLED", a.getStatus()));
 
         IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,()->instance.removePatient("incorrectId"));
         assertEquals("Patient is invalid",ex.getMessage());
@@ -127,6 +125,40 @@ class ClinicDataTest {
         //Test when patient tries to cancel already cancelled appointment
         IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,()-> instance.cancelAppointment(apt.getBookingId(),apt.getPatientId()));
         assertEquals("Appointment already cancelled", ex.getMessage());
+
+        //book another appointment
+        Appointment apt2 = instance.bookAppointment("2025-02-04 14","patient-1","physio-1");
+        instance.attendAppointment(apt2.getBookingId(),apt2.getPatientId());
+
+        //Test when patient tries to cancel an attended appointment
+        IllegalArgumentException ex2 = assertThrows(IllegalArgumentException.class,()-> instance.cancelAppointment(apt2.getBookingId(),apt2.getPatientId()));
+        assertEquals("Cannot cancel attended appointment", ex2.getMessage());
+    }
+
+    @Test
+    void testAttendAppointment() {
+        System.out.println("attendAppointment");
+        ClinicData instance = new ClinicData();
+
+        Appointment apt = instance.bookAppointment("2025-02-03 10","patient-1","physio-1"); //book appointment first
+        instance.attendAppointment(apt.getBookingId(),apt.getPatientId()); //cancel the same appointment
+
+        Appointment getApt = instance.getAppointment(apt.getBookingId());
+        String result = getApt.getStatus();
+        String expected = "ATTENDED";
+        assertEquals(expected,result);
+
+        //Test when patient tries to attend already attended appointment
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,()-> instance.attendAppointment(apt.getBookingId(),apt.getPatientId()));
+        assertEquals("Appointment already attended", ex.getMessage());
+
+        //book another appointment
+        Appointment apt2 = instance.bookAppointment("2025-02-04 14","patient-1","physio-1");
+        instance.cancelAppointment(apt2.getBookingId(),apt2.getPatientId());
+
+        //Test when patient tries to attend a cancelled appointment
+        IllegalArgumentException ex2 = assertThrows(IllegalArgumentException.class,()-> instance.attendAppointment(apt2.getBookingId(),apt2.getPatientId()));
+        assertEquals("Cannot attend cancelled appointment", ex2.getMessage());
     }
 
     @Test

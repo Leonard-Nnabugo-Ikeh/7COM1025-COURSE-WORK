@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class ClinicData {
@@ -20,23 +19,23 @@ public class ClinicData {
 
     public Patient getPatient(String patientId){
         return this.patients.stream().filter(p->p.getId().equals(patientId)).findFirst().orElseThrow(()->new IllegalArgumentException("Patient is invalid"));
-    };
+    }
 
     public Patient addPatient(String fullName, String address, String phone) {
         Patient pat = new Patient(fullName,address,phone,totalEverNumOfPatients);
         this.patients.add(pat);
         this.totalEverNumOfPatients++;
         return pat;
-    };
+    }
 
     public void removePatient(String patientId) {
         if(!validation.isPatientValid(this.patients,patientId))throw new IllegalArgumentException("Patient is invalid");
 
-        //cancel patients appointments
+        //cancel all patients appointments
         this.appointments.forEach(a->{
             if(a.getPatientId().equals(patientId)){
                 a.setStatus("CANCELLED");
-            };
+            }
         });
 
         //remove patient
@@ -73,11 +72,11 @@ public class ClinicData {
 
     public Physiotherapist getPhysiotherapist(String physioId){
         return this.physiotherapists.stream().filter(p->p.getId().equals(physioId)).findFirst().orElseThrow(()->new IllegalArgumentException("Physiotherapist is invalid"));
-    };
+    }
 
     public Appointment getAppointment(String bookingId){
        return this.appointments.stream().filter(a->a.getBookingId().equals(bookingId)).findFirst().orElseThrow(()->new IllegalArgumentException("Appointment is invalid"));
-    };
+    }
 
     public Appointment bookAppointment(String dateTime,String patientId,String physioId) {
         //check if patient is valid
@@ -109,10 +108,22 @@ public class ClinicData {
 
         if(!apt.getPatientId().equals(patientId)) throw new IllegalArgumentException("Unauthorized");
         if(apt.getStatus().equals("CANCELLED")) throw new IllegalArgumentException("Appointment already cancelled");
-        if(apt.getStatus().equals("ATTENDED")) throw new IllegalArgumentException("Appointment already attended");
+        if(apt.getStatus().equals("ATTENDED")) throw new IllegalArgumentException("Cannot cancel attended appointment");
 
         this.appointments.forEach(a->{
             if(a.getBookingId().equals(bookingId)) a.setStatus("CANCELLED");
+        });
+    }
+
+    public void attendAppointment(String bookingId, String patientId) {
+        Appointment apt = getAppointment(bookingId);
+
+        if(!apt.getPatientId().equals(patientId)) throw new IllegalArgumentException("Unauthorized");
+        if(apt.getStatus().equals("ATTENDED")) throw new IllegalArgumentException("Appointment already attended");
+        if(apt.getStatus().equals("CANCELLED")) throw new IllegalArgumentException("Cannot attend cancelled appointment");
+
+        this.appointments.forEach(a->{
+            if(a.getBookingId().equals(bookingId)) a.setStatus("ATTENDED");
         });
     }
 
