@@ -4,11 +4,13 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class Schedule {
-    private String dateTime;
-    private String physioId;
-    private Treatment treatment;
+    private final String scheduleId;
+    private final String dateTime;
+    private final String physioId;
+    private final Treatment treatment;
 
-    public Schedule(String dateTime, String physioId, Treatment treatment) {
+    public Schedule(String dateTime, String physioId, Treatment treatment, String scheduleId) {
+        this.scheduleId = scheduleId;
         this.dateTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern(dateTime));
         this.physioId = physioId;
         this.treatment = treatment;
@@ -25,4 +27,6 @@ public class Schedule {
     public Treatment getTreatment() {
         return treatment;
     }
+
+    public String getScheduleId() {return scheduleId;}
 }

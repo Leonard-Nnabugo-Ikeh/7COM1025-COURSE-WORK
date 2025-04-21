@@ -46,7 +46,7 @@ class ClinicDataTest {
         System.out.println("removePatient");
         ClinicData instance = new ClinicData();
         int numOfPatients = instance.getPatientsSize();
-        instance.bookAppointment("2025-02-03 10","patient-1","physio-1");
+        instance.bookAppointment("schedule-1","patient-1");
         instance.removePatient("patient-1");
 
         int expected = numOfPatients-1; //expect total number of patients to decrease by 1
@@ -87,35 +87,31 @@ class ClinicDataTest {
         ClinicData instance = new ClinicData();
         int totalNumOfAppointments = instance.getAppointmentsSize();
 
-        instance.bookAppointment("2025-02-03 10","patient-1","physio-1");
+        instance.bookAppointment("schedule-1","patient-1");
 
         int expected = totalNumOfAppointments+1;
         int result = instance.getAppointmentsSize();
         assertEquals(expected,result); //passes of appointment got booked
 
         //Test when an invalid patient id is passed
-        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,()-> instance.bookAppointment("2025-02-03 10","pat-1","physio-1")); //pat-1 is not an available patient id
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,()-> instance.bookAppointment("schedule-1","pat-1")); //pat-1 is not an available patient id
         assertEquals("Patient is invalid", ex.getMessage());
 
-        //Test when an invalid physiotherapist id is passed
-        IllegalArgumentException ex2 = assertThrows(IllegalArgumentException.class,()-> instance.bookAppointment("2025-02-03 10","patient-1","physio-100")); //physio-100 is not an available physio id
-        assertEquals("Physiotherapist is invalid", ex2.getMessage());
-
-        //test for when a schedule is not available for a physiotherapist
-        IllegalArgumentException ex3 = assertThrows(IllegalArgumentException.class,()-> instance.bookAppointment("2025-02-03 12","patient-1","physio-1")); //this datetime is not part of the physios schedule
-        assertEquals("Schedule not available for physiotherapist", ex3.getMessage());
+        //Test when an invalid schedule id is passed
+        IllegalArgumentException ex2 = assertThrows(IllegalArgumentException.class,()-> instance.bookAppointment("schedule-100","patient-1")); //schedule-100 is not an available schedule
+        assertEquals("Schedule not found", ex2.getMessage());
 
         //test when the schedule has already been booked or attended
-        IllegalArgumentException ex4 = assertThrows(IllegalArgumentException.class,()-> instance.bookAppointment("2025-02-03 10","patient-2","physio-1")); //this was already booked by patient-1 in our first edge-case
-        assertEquals("Appointment already booked or attended", ex4.getMessage());
+        IllegalArgumentException ex3 = assertThrows(IllegalArgumentException.class,()-> instance.bookAppointment("schedule-1","patient-2")); //this was already booked by patient-1 in our first edge-case
+        assertEquals("Appointment already booked or attended", ex3.getMessage());
 
         //test when patient tries to book the same appointment twice
-        IllegalArgumentException ex5 = assertThrows(IllegalArgumentException.class,()-> instance.bookAppointment("2025-02-03 10","patient-1","physio-1"));
-        assertEquals("Appointment already booked or attended", ex5.getMessage());
+        IllegalArgumentException ex4 = assertThrows(IllegalArgumentException.class,()-> instance.bookAppointment("schedule-1","patient-1"));
+        assertEquals("Appointment already booked or attended", ex4.getMessage());
 
         //test when patient tries to book another appointment at the same date and time
-        IllegalArgumentException ex6 = assertThrows(IllegalArgumentException.class,()-> instance.bookAppointment("2025-02-03 10","patient-1","physio-3")); //patient 1 tries to book another appointment at the same date and time
-        assertEquals("Patient already booked for an appointment at chosen time", ex6.getMessage());
+        IllegalArgumentException ex5 = assertThrows(IllegalArgumentException.class,()-> instance.bookAppointment("schedule-9","patient-1")); //patient 1 tries to book another appointment at the same date and time
+        assertEquals("Patient already booked for an appointment at chosen time", ex5.getMessage());
     }
 
     @Test
@@ -123,7 +119,7 @@ class ClinicDataTest {
         System.out.println("cancelAppointment");
         ClinicData instance = new ClinicData();
 
-        Appointment apt = instance.bookAppointment("2025-02-03 10","patient-1","physio-1"); //book appointment first
+        Appointment apt = instance.bookAppointment("schedule-1","patient-1"); //book appointment first
         instance.cancelAppointment(apt.getBookingId(),apt.getPatientId()); //cancel the same appointment
 
         Appointment getApt = instance.getAppointment(apt.getBookingId());
@@ -136,7 +132,7 @@ class ClinicDataTest {
         assertEquals("Appointment already cancelled", ex.getMessage());
 
         //book another appointment
-        Appointment apt2 = instance.bookAppointment("2025-02-04 14","patient-1","physio-1");
+        Appointment apt2 = instance.bookAppointment("schedule-2","patient-1");
         instance.attendAppointment(apt2.getBookingId(),apt2.getPatientId());
 
         //Test when patient tries to cancel an attended appointment
@@ -149,7 +145,7 @@ class ClinicDataTest {
         System.out.println("attendAppointment");
         ClinicData instance = new ClinicData();
 
-        Appointment apt = instance.bookAppointment("2025-02-03 10","patient-1","physio-1"); //book appointment first
+        Appointment apt = instance.bookAppointment("schedule-1","patient-1"); //book appointment first
         instance.attendAppointment(apt.getBookingId(),apt.getPatientId()); //cancel the same appointment
 
         Appointment getApt = instance.getAppointment(apt.getBookingId());
@@ -162,7 +158,7 @@ class ClinicDataTest {
         assertEquals("Appointment already attended", ex.getMessage());
 
         //book another appointment
-        Appointment apt2 = instance.bookAppointment("2025-02-04 14","patient-1","physio-1");
+        Appointment apt2 = instance.bookAppointment("schedule-2","patient-1");
         instance.cancelAppointment(apt2.getBookingId(),apt2.getPatientId());
 
         //Test when patient tries to attend a cancelled appointment
@@ -175,8 +171,8 @@ class ClinicDataTest {
         System.out.println("changeAppointment");
         ClinicData instance = new ClinicData();
 
-        Appointment apt = instance.bookAppointment("2025-02-03 10","patient-1","physio-1"); //book appointment first
-        Appointment changeApt = instance.changeAppointment(apt.getBookingId(),"patient-1","2025-02-04 14","physio-1"); //change apt
+        Appointment apt = instance.bookAppointment("schedule-1","patient-1"); //book appointment first
+        Appointment changeApt = instance.changeAppointment(apt.getBookingId(),"patient-1","schedule-2"); //change apt
 
         Appointment oldApt = instance.getAppointment(apt.getBookingId());
         String expected = "CANCELLED"; //expect old appointment to be cancelled
@@ -191,7 +187,7 @@ class ClinicDataTest {
         System.out.println("getAppointment");
         ClinicData instance = new ClinicData();
 
-        Appointment apt = instance.bookAppointment("2025-02-03 10","patient-1","physio-1");
+        Appointment apt = instance.bookAppointment("schedule-1","patient-1");
         Appointment getApt = instance.getAppointment(apt.getBookingId());
 
         assertEquals(apt.getBookingId(),getApt.getBookingId());
@@ -210,7 +206,7 @@ class ClinicDataTest {
         int result = availableApts.size();
         assertEquals(expected,result);
 
-        Appointment bookedApt = instance.bookAppointment("2025-02-03 10","patient-1","physio-1"); //book an appointment under physiotherapy
+        Appointment bookedApt = instance.bookAppointment("schedule-1","patient-1"); //book an appointment under physiotherapy
         ArrayList<Schedule> newAvailableApts = instance.getAvailableAppointmentsByExpertise("Physiotherapy");
         expected = 3; //after booking number of available appointments should reduce by 1
         result = newAvailableApts.size();
@@ -233,7 +229,7 @@ class ClinicDataTest {
         int result = availableApts.size();
         assertEquals(expected,result);
 
-        Appointment bookedApt = instance.bookAppointment("2025-02-03 10","patient-1","physio-1"); //book an appointment under John Doe
+        Appointment bookedApt = instance.bookAppointment("schedule-1","patient-1"); //book an appointment under John Doe
         ArrayList<Schedule> newAvailableApts = instance.getAvailableAppointmentsByExpertise("Physiotherapy");
         expected = 3; //after booking number of available appointments should reduce by 1
         result = newAvailableApts.size();
@@ -254,7 +250,7 @@ class ClinicDataTest {
         int expected = 0;
         assertEquals(expected,result);
 
-        instance.bookAppointment("2025-02-03 10","patient-1","physio-1");
+        instance.bookAppointment("schedule-1","patient-1");
         result = instance.getAppointmentsSize();
         expected = 1;
         assertEquals(expected,result);
@@ -269,7 +265,7 @@ class ClinicDataTest {
         int expected = 0;
         assertEquals(expected,result);
 
-        instance.bookAppointment("2025-02-03 10","patient-1","physio-3");
+        instance.bookAppointment("schedule-9","patient-1");
         result = instance.getPatientAppointments("patient-1").size();
         expected = 1;
         assertEquals(expected,result);

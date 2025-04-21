@@ -42,8 +42,8 @@ public class Physiotherapist extends Personnel{
         return timetable;
     }
 
-    public Schedule getSchedule(String dateTime) {
-        Optional<Schedule> schedule = this.timetable.stream().filter(s->s.getDateTime().equals(dateTime)).findFirst();
+    public Schedule getSchedule(String scheduleId) {
+        Optional<Schedule> schedule = this.timetable.stream().filter(s->s.getScheduleId().equals(scheduleId)).findFirst();
         return schedule.orElse(null);
     }
 
@@ -51,7 +51,8 @@ public class Physiotherapist extends Personnel{
         String [] infoList = line.split("#-")[1].trim().split("/");
         Treatment treatment = new Treatment(infoList[2].trim(),infoList[1].trim());
         String dateTime = infoList[3].trim();
+        String scheduleId = infoList[4].trim();
 
-        this.timetable.add(new Schedule(dateTime, this.getId(), treatment));
+        this.timetable.add(new Schedule(dateTime, this.getId(), treatment, scheduleId));
     }
 }

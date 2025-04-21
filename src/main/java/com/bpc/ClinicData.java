@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class ClinicData {
@@ -74,25 +75,26 @@ public class ClinicData {
         return totalEverNumOfPatients;
     }
 
+    public Schedule getSchedule(String scheduleId) {
+        Physiotherapist physiotherapist = this.physiotherapists.stream().filter(p -> p.getSchedule(scheduleId) != null).findFirst().orElseThrow(()->new IllegalArgumentException("Schedule not found"));
+        return physiotherapist.getSchedule(scheduleId);
+    }
+
     public Physiotherapist getPhysiotherapist(String physioId){
         return this.physiotherapists.stream().filter(p->p.getId().equals(physioId)).findFirst().orElseThrow(()->new IllegalArgumentException("Physiotherapist is invalid"));
     }
 
-    public Schedule getScheduleForBooking(String patientId, String dateTime, String physioId) {
+    public Schedule getScheduleForBooking(String patientId, String scheduleId) {
         if(!validation.isPatientValid(this.patients,patientId)) throw new IllegalArgumentException("Patient is invalid");
 
-        Physiotherapist physio = getPhysiotherapist(physioId); //throws exception if physio is invalid
-
-        //check schedule
-        Schedule schedule = physio.getSchedule(dateTime);
-        if(schedule==null) throw new IllegalArgumentException("Schedule not available for physiotherapist");
+        Schedule schedule = this.getSchedule(scheduleId); // throws error if schedule is not found
 
         //check if appointment is booked or attended
-        boolean isBookedOrAttended = validation.appointmentIsBookedOrAttended(this.appointments,dateTime,physioId);
+        boolean isBookedOrAttended = validation.appointmentIsBookedOrAttended(this.appointments,scheduleId);
         if(isBookedOrAttended) throw new IllegalArgumentException("Appointment already booked or attended");
 
         //check if patient has already booked an appointment at that specific time of the date
-        boolean patientBookedAtDatetime = validation.patientIsBookedAtDatetime(this.appointments,patientId,dateTime);
+        boolean patientBookedAtDatetime = validation.patientIsBookedAtDatetime(this.appointments,patientId,schedule.getDateTime() );
         if(patientBookedAtDatetime) throw new IllegalArgumentException("Patient already booked for an appointment at chosen time");
 
         return schedule;
@@ -111,7 +113,7 @@ public class ClinicData {
 
         physiotherapists.forEach(p->{
             p.getTimetable().forEach(s->{
-                if(!validation.appointmentIsBookedOrAttended(this.appointments,s.getDateTime(),s.getPhysioId()) && s.getTreatment().getExpertise().equalsIgnoreCase(expertise)) {
+                if(!validation.appointmentIsBookedOrAttended(this.appointments,s.getScheduleId()) && s.getTreatment().getExpertise().equalsIgnoreCase(expertise)) {
                     schedules.add(s);
                 }
             });
@@ -125,7 +127,7 @@ public class ClinicData {
 
         physiotherapists.forEach(p->{
             p.getTimetable().forEach(s->{
-                if(!validation.appointmentIsBookedOrAttended(this.appointments,s.getDateTime(),s.getPhysioId()) && p.getFullName().equalsIgnoreCase(physioFullname)) {
+                if(!validation.appointmentIsBookedOrAttended(this.appointments,s.getScheduleId()) && p.getFullName().equalsIgnoreCase(physioFullname)) {
                     schedules.add(s);
                 }
             });
@@ -134,8 +136,8 @@ public class ClinicData {
         return schedules;
     }
 
-    public Appointment bookAppointment(String dateTime,String patientId,String physioId) {
-        Schedule schedule = this.getScheduleForBooking(patientId,dateTime,physioId);
+    public Appointment bookAppointment(String scheduleId,String patientId) {
+        Schedule schedule = this.getScheduleForBooking(patientId,scheduleId);
 
         Appointment appointment = new Appointment(patientId,schedule,totalEverNumOfAppointments); //Appointment instance
         this.appointments.add(appointment); //add appointment
@@ -170,8 +172,8 @@ public class ClinicData {
         });
     }
 
-    public Appointment changeAppointment(String oldBookingId, String patientId, String newAptDatetime, String newAptPhysioId) {
-        Schedule schedule = this.getScheduleForBooking(patientId,newAptDatetime,newAptPhysioId);
+    public Appointment changeAppointment(String oldBookingId, String patientId, String scheduleId) {
+        Schedule schedule = this.getScheduleForBooking(patientId,scheduleId);
 
         cancelAppointment(oldBookingId,patientId);
 

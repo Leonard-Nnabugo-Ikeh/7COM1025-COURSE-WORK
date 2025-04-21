@@ -24,8 +24,8 @@ public class Validation {
         return physiotherapists.stream().anyMatch(p->p.getId().equals(physioId));
     }
 
-    public boolean appointmentIsBookedOrAttended(ArrayList<Appointment> appointments, String dateTime, String physioId) {
-        return appointments.stream().anyMatch(a->a.getSchedule().getDateTime().equals(dateTime)&&a.getSchedule().getPhysioId().equals(physioId) && (a.getStatus().equals("BOOKED") || a.getStatus().equals("ATTENDED")));
+    public boolean appointmentIsBookedOrAttended(ArrayList<Appointment> appointments, String scheduleId) {
+        return appointments.stream().anyMatch(a->a.getSchedule().getScheduleId().equals(scheduleId) && (a.getStatus().equals("BOOKED") || a.getStatus().equals("ATTENDED")));
     }
 
     public boolean patientIsBookedAtDatetime(ArrayList<Appointment> appointments, String patientId, String dateTime) {
