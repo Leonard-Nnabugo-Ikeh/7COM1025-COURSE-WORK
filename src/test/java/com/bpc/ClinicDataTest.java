@@ -11,11 +11,20 @@ class ClinicDataTest {
         System.out.println("addPatient");
         ClinicData instance = new ClinicData();
         int numOfPatients = instance.getPatientsSize();
-        instance.addPatient("Abedi Pele","Some address","+44904438373");
+        instance.addPatient("Abedi Pele","Some address","+4490443837334");
 
         int  expected = numOfPatients+1; //expect total number of patients to increase by 1
         int result = instance.getPatientsSize();
         assertEquals(expected,result);
+
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,()->instance.addPatient("A","Some address","+44904438373"));
+        assertEquals("Full name is invalid",ex.getMessage());
+
+        IllegalArgumentException ex2 = assertThrows(IllegalArgumentException.class,()->instance.addPatient("Abedi Pele","S","+44904438373"));
+        assertEquals("Address is invalid",ex2.getMessage());
+
+        IllegalArgumentException ex3 = assertThrows(IllegalArgumentException.class,()->instance.addPatient("Abedi Pele","Some address","+449"));
+        assertEquals("Phone number is invalid",ex3.getMessage());
     }
 
     @Test

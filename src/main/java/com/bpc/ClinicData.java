@@ -22,6 +22,10 @@ public class ClinicData {
     }
 
     public Patient addPatient(String fullName, String address, String phone) {
+        if(!validation.isFullNameValid(fullName)) throw new IllegalArgumentException("Full name is invalid");
+        if(!validation.isAddressValid(address)) throw new IllegalArgumentException("Address is invalid");
+        if(!validation.isPhoneNumberValid(phone)) throw new IllegalArgumentException("Phone number is invalid");
+
         Patient pat = new Patient(fullName,address,phone,totalEverNumOfPatients);
         this.patients.add(pat);
         this.totalEverNumOfPatients++;
