@@ -136,9 +136,14 @@ class ClinicDataTest {
         Appointment apt2 = instance.bookAppointment("schedule-2", "patient-1");
         instance.attendAppointment(apt2.getBookingId(), apt2.getPatientId());
 
+        //Test when patient tries to cancel appointment they are not booked in
+        IllegalArgumentException ex2 = assertThrows(IllegalArgumentException.class, () -> instance.cancelAppointment(apt2.getBookingId(), "patient-4"));
+        assertEquals("Patient unauthorized to cancel this appointment", ex2.getMessage());
+
         //Test when patient tries to cancel an attended appointment
-        IllegalArgumentException ex2 = assertThrows(IllegalArgumentException.class, () -> instance.cancelAppointment(apt2.getBookingId(), apt2.getPatientId()));
-        assertEquals("Cannot cancel attended appointment", ex2.getMessage());
+        IllegalArgumentException ex3 = assertThrows(IllegalArgumentException.class, () -> instance.cancelAppointment(apt2.getBookingId(), apt2.getPatientId()));
+        assertEquals("Cannot cancel attended appointment", ex3.getMessage());
+
     }
 
     @Test
@@ -162,9 +167,13 @@ class ClinicDataTest {
         Appointment apt2 = instance.bookAppointment("schedule-2", "patient-1");
         instance.cancelAppointment(apt2.getBookingId(), apt2.getPatientId());
 
+        //Test when patient tries to cancel appointment they are not booked in
+        IllegalArgumentException ex2 = assertThrows(IllegalArgumentException.class, () -> instance.attendAppointment(apt2.getBookingId(), "patient-4"));
+        assertEquals("Patient unauthorized to attend this appointment", ex2.getMessage());
+
         //Test when patient tries to attend a cancelled appointment
-        IllegalArgumentException ex2 = assertThrows(IllegalArgumentException.class, () -> instance.attendAppointment(apt2.getBookingId(), apt2.getPatientId()));
-        assertEquals("Cannot attend cancelled appointment", ex2.getMessage());
+        IllegalArgumentException ex3 = assertThrows(IllegalArgumentException.class, () -> instance.attendAppointment(apt2.getBookingId(), apt2.getPatientId()));
+        assertEquals("Cannot attend cancelled appointment", ex3.getMessage());
     }
 
     @Test

@@ -145,8 +145,13 @@ public class ClinicData {
     public ArrayList<Appointment> getBookedAppointmentsByPhysiotherapistName(String physioFullName) {
         ArrayList<Appointment> apts = new ArrayList<>();
         appointments.forEach(a -> {
-            Physiotherapist physio = getPhysiotherapist(a.getSchedule().getPhysioId());
-            if (a.getStatus().equals("BOOKED") && physio.getFullName().equalsIgnoreCase(physioFullName)) apts.add(a);
+            try {
+                Physiotherapist physio = getPhysiotherapist(a.getSchedule().getPhysioId());
+                if (a.getStatus().equals("BOOKED") && physio.getFullName().equalsIgnoreCase(physioFullName))
+                    apts.add(a);
+            } catch (Exception e) {
+                //
+            }
         });
         return apts;
     }
@@ -171,7 +176,8 @@ public class ClinicData {
             throw new IllegalArgumentException("Patient is invalid");
         Appointment apt = getAppointment(bookingId);
 
-        if (!apt.getPatientId().equals(patientId)) throw new IllegalArgumentException("Unauthorized");
+        if (!apt.getPatientId().equals(patientId))
+            throw new IllegalArgumentException("Patient unauthorized to cancel this appointment");
         if (apt.getStatus().equals("CANCELLED")) throw new IllegalArgumentException("Appointment already cancelled");
         if (apt.getStatus().equals("ATTENDED"))
             throw new IllegalArgumentException("Cannot cancel attended appointment");
@@ -186,7 +192,8 @@ public class ClinicData {
             throw new IllegalArgumentException("Patient is invalid");
         Appointment apt = getAppointment(bookingId);
 
-        if (!apt.getPatientId().equals(patientId)) throw new IllegalArgumentException("Unauthorized");
+        if (!apt.getPatientId().equals(patientId))
+            throw new IllegalArgumentException("Patient unauthorized to attend this appointment");
         if (apt.getStatus().equals("ATTENDED")) throw new IllegalArgumentException("Appointment already attended");
         if (apt.getStatus().equals("CANCELLED"))
             throw new IllegalArgumentException("Cannot attend cancelled appointment");
