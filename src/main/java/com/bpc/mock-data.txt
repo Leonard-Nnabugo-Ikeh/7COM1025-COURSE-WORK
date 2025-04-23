@@ -16,8 +16,6 @@ Treatments:
 * Spinal adjustment
 * Postural correction
 * Joint manipulation
-* Gait training
-* Balance therapy
 * Neuro-muscular re-education
 
 Expertise:
@@ -26,7 +24,6 @@ Expertise:
 * Rehabilitation
 * Sports Therapy
 * Chiropractic Care
-* Neurological Rehab
 
 Physiotherapists
 ## John Doe / 1, Doe Street, Somewhere / +448060681123 / Physiotherapy ~ Massage,Dry needling,Exercise prescription ~~ Rehabilitation ~ Pool rehabilitation,Resistance training
@@ -34,7 +31,6 @@ Physiotherapists
 ## Bruno Fernandes / 3, Bruno Street, Somewhere / +44803648620 / Osteopathy ~ Mobilisation of the spine and joints,Cranial techniques,Soft tissue therapy
 ## Marcus Rashford / 4, Rashford Street, Somewhere / +44803256987 / Sports Therapy ~ Deep tissue massage,Athletic taping ~~ Chiropractic Care ~ Spinal adjustment,Joint manipulation
 ## Harry Kane / 5, Kane Street, Somewhere / +44803874512 / Chiropractic Care ~ Spinal adjustment,Postural correction,Joint manipulation
-## Phil Foden / 6, Foden Street, Somewhere / +44803678900 / Neurological Rehab ~ Gait training,Balance therapy,Neuro-muscular re-education ~~ Rehabilitation ~ Functional movement training,Resistance training
 
 Patients
 -- Ryan Giggs / 1, Ryan Street, Somewhere / +448073632129
@@ -61,11 +57,11 @@ Timetable
 
 #- physio-3 / Osteopathy / Mobilisation of the spine and joints / 2025-02-03 10 / schedule-9
 #- physio-3 / Osteopathy / Cranial techniques / 2025-02-06 15 / schedule-10
-#- physio-3 / Osteopathy / Soft tissue therapy / 2025-02-12 10 / schedule-11
+#- physio-3 / Osteopathy / Soft tissue therapy / 2025-02-15 09 / schedule-11
 #- physio-3 / Osteopathy / Mobilisation of the spine and joints / 2025-02-17 14 / schedule-2
 
 #- physio-4 / Sports Therapy / Deep tissue massage / 2025-02-03 11 / schedule-13
-#- physio-4 / Chiropractic Care / Spinal adjustment / 2025-02-05 10 / schedule-14
+#- physio-4 / Chiropractic Care / Spinal adjustment / 2025-02-07 10 / schedule-14
 #- physio-4 / Sports Therapy / Athletic taping / 2025-02-10 13 / schedule-15
 #- physio-4 / Chiropractic Care / Joint manipulation / 2025-02-13 14 / schedule-16
 
@@ -73,8 +69,3 @@ Timetable
 #- physio-5 / Chiropractic Care / Postural correction / 2025-02-08 12 / schedule-18
 #- physio-5 / Chiropractic Care / Joint manipulation / 2025-02-15 09 / schedule-19
 #- physio-5 / Chiropractic Care / Spinal adjustment / 2025-02-20 10 / schedule-20
-
-#- physio-6 / Neurological Rehab / Gait training / 2025-02-04 09 / schedule-21
-#- physio-6 / Rehabilitation / Functional movement training / 2025-02-07 15 / schedule-22
-#- physio-6 / Neurological Rehab / Balance therapy / 2025-02-12 11 / schedule-23
-#- physio-6 / Rehabilitation / Resistance training / 2025-02-18 13 / schedule-24
