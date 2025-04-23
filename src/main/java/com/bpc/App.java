@@ -168,6 +168,7 @@ public class App {
                 System.out.println("Press 0 to: Go to main menu\n");
                 System.out.println("Press 1 to: Search for available appointments by expertise\n");
                 System.out.println("Press 2 to: Search for available appointments by physiotherapist name\n");
+                System.out.println("Press 3 to: Book an available appointment\n");
 
                 String input = scanner.nextLine();
 
@@ -175,33 +176,50 @@ public class App {
                     case "0":
                         return;
                     case "1":
-                        searchByExpertiseAction();
-                        running = false;
+                        searchByExpertiseMenu();
                         break;
                     case "2":
-                        searchByPhysiotherapistNameAction();
-                        running = false;
+                        searchByPhysiotherapistNameMenu();
+                        break;
+                    case "3":
+                        bookAppointmentMenu();
                         break;
                     default:
                         System.out.println("Invalid input, please try again");
                 }
             }
+        }
+    }
 
-            System.out.println("\nPress 0 to: Go to main menu\n");
-            System.out.println("Press 1 to: Book an appointment\n");
-            System.out.println("Press 2 to: Search for available appointments again\n");
+    private void searchByExpertiseMenu() {
+        boolean inMenu = true;
+        boolean running = true;
+
+        while (inMenu) {
+            while (running) {
+                System.out.println("Enter expertise name: ");
+                String expertiseName = scanner.nextLine();
+
+                ArrayList<Schedule> schedules = clinicData.getAvailableAppointmentsByExpertise(expertiseName);
+                if (schedules.isEmpty()) {
+                    System.out.println("No available appointments found for expertise name: " + expertiseName);
+                } else {
+                    printSchedules(schedules);
+                }
+                running = false;
+            }
+
+            System.out.println("\nPress 1 to: Search by expertise again\n");
+            System.out.println("Press 2 to: Go to previous menu\n");
 
             String input = scanner.nextLine();
 
             switch (input) {
-                case "0":
-                    inMenu = false;
-                    break;
                 case "1":
-                    bookAppointmentMenu();
+                    running = true;
                     break;
                 case "2":
-                    running = true;
+                    inMenu = false;
                     break;
                 default:
                     System.out.println("Invalid input, please try again");
@@ -209,87 +227,25 @@ public class App {
         }
     }
 
-    private void searchByExpertiseAction() {
-        System.out.println("Enter expertise name: ");
-        String expertiseName = scanner.nextLine();
-
-        ArrayList<Schedule> schedules = clinicData.getAvailableAppointmentsByExpertise(expertiseName);
-        if (schedules.isEmpty()) {
-            System.out.println("No available appointments found for expertise name: " + expertiseName);
-            return;
-        }
-        printSchedules(schedules);
-    }
-
-    private void searchByPhysiotherapistNameAction() {
-        System.out.println("Enter physiotherapist name: ");
-        String physioName = scanner.nextLine();
-
-        ArrayList<Schedule> schedules = clinicData.getAvailableAppointmentsByPhysiotherapistName(physioName);
-        if (schedules.isEmpty()) {
-            System.out.println("No available appointments found for physiotherapist: " + physioName);
-            return;
-        }
-        printSchedules(schedules);
-    }
-
-    private void searchBookedAppointmentsByExpertiseAction() {
-        System.out.println("Enter expertise name: ");
-        String expertiseName = scanner.nextLine();
-
-        ArrayList<Appointment> appointments = clinicData.getBookedAppointmentsByExpertise(expertiseName);
-        if (appointments.isEmpty()) {
-            System.out.println("No booked appointments found for expertise name: " + expertiseName);
-            return;
-        }
-        printAppointments(appointments);
-    }
-
-    private void searchBookedAppointmentsByPhysiotherapistNameAction() {
-        System.out.println("Enter physiotherapist name: ");
-        String physioName = scanner.nextLine();
-
-        ArrayList<Appointment> appointments = clinicData.getBookedAppointmentsByPhysiotherapistName(physioName);
-        if (appointments.isEmpty()) {
-            System.out.println("No booked appointments found for physiotherapist name: " + physioName);
-            return;
-        }
-        printAppointments(appointments);
-    }
-
-    private void searchBookedAppointmentsByPatientIdAction() {
-        System.out.println("Enter patient ID: ");
-        String patientId = scanner.nextLine();
-
-        ArrayList<Appointment> appointments = clinicData.getBookedAppointmentsByPatientId(patientId);
-        if (appointments.isEmpty()) {
-            System.out.println("No booked appointments found for patient ID: " + patientId);
-            return;
-        }
-        printAppointments(appointments);
-    }
-
-    private void bookAppointmentMenu() {
+    private void searchByPhysiotherapistNameMenu() {
         boolean inMenu = true;
         boolean running = true;
 
         while (inMenu) {
             while (running) {
-                System.out.println("Enter patient ID:\n");
-                String patientId = scanner.nextLine();
-                System.out.println("Enter schedule ID:\n");
-                String scheduleId = scanner.nextLine();
+                System.out.println("Enter physiotherapist name: ");
+                String physioName = scanner.nextLine();
 
-                try {
-                    Appointment apt = clinicData.bookAppointment(scheduleId, patientId);
-                    System.out.println("Appointment has been booked, booking id: " + apt.getBookingId());
-                    running = false;
-                } catch (Exception e) {
-                    System.out.println("\n" + e.getMessage() + ", try again\n");
+                ArrayList<Schedule> schedules = clinicData.getAvailableAppointmentsByPhysiotherapistName(physioName);
+                if (schedules.isEmpty()) {
+                    System.out.println("No available appointments found for physiotherapist: " + physioName);
+                } else {
+                    printSchedules(schedules);
                 }
+                running = false;
             }
 
-            System.out.println("\nPress 1 to: Book another appointment\n");
+            System.out.println("\nPress 1 to: Search by physiotherapist name again\n");
             System.out.println("Press 2 to: Go to previous menu\n");
 
             String input = scanner.nextLine();
@@ -317,6 +273,9 @@ public class App {
                 System.out.println("Press 1 to: Search for booked appointments by expertise\n");
                 System.out.println("Press 2 to: Search for booked appointments by physiotherapist name\n");
                 System.out.println("Press 3 to: Search for booked appointments by patient ID\n");
+                System.out.println("Press 4 to: Cancel a booked appointment\n");
+                System.out.println("Press 5 to: Change a booked appointment\n");
+                System.out.println("Press 6 to: Attend a booked appointment\n");
 
                 String input = scanner.nextLine();
 
@@ -324,46 +283,177 @@ public class App {
                     case "0":
                         return;
                     case "1":
-                        searchBookedAppointmentsByExpertiseAction();
-                        running = false;
+                        searchBookedAppointmentsByExpertiseMenu();
                         break;
                     case "2":
-                        searchBookedAppointmentsByPhysiotherapistNameAction();
-                        running = false;
+                        searchBookedAppointmentsByPhysiotherapistNameMenu();
                         break;
                     case "3":
-                        searchBookedAppointmentsByPatientIdAction();
-                        running = false;
+                        searchBookedAppointmentsByPatientIdMenu();
+                        break;
+                    case "4":
+                        cancelAppointmentMenu();
+                        break;
+                    case "5":
+                        changeAppointmentMenu();
+                        break;
+                    case "6":
+                        attendAppointmentMenu();
                         break;
                     default:
                         System.out.println("Invalid input, please try again");
                 }
             }
+        }
+    }
 
-            System.out.println("\nPress 0 to: Go to main menu\n");
-            System.out.println("Press 1 to: Cancel an appointment\n");
-            System.out.println("Press 2 to: Change an appointment\n");
-            System.out.println("Press 3 to: Go to previous menu\n");
+    private void searchBookedAppointmentsByExpertiseMenu() {
+        boolean inMenu = true;
+        boolean running = true;
+
+        while (inMenu) {
+            while (running) {
+                System.out.println("Enter expertise name: ");
+                String expertiseName = scanner.nextLine();
+
+                ArrayList<Appointment> appointments = clinicData.getBookedAppointmentsByExpertise(expertiseName);
+                if (appointments.isEmpty()) {
+                    System.out.println("No booked appointments found for expertise name: " + expertiseName);
+                } else {
+                    printAppointments(appointments);
+                }
+                running = false;
+            }
+
+            System.out.println("\nPress 1 to: Search booked appointments by expertise again\n");
+            System.out.println("Press 2 to: Go to previous menu\n");
 
             String input = scanner.nextLine();
 
             switch (input) {
-                case "0":
-                    return;
                 case "1":
-                    cancelAppointmentMenu();
+                    running = true;
                     break;
                 case "2":
-                    changeAppointmentMenu();
-                    break;
-                case "3":
-                    running = true;
+                    inMenu = false;
                     break;
                 default:
                     System.out.println("Invalid input, please try again");
             }
         }
     }
+
+    private void searchBookedAppointmentsByPhysiotherapistNameMenu() {
+        boolean inMenu = true;
+        boolean running = true;
+
+        while (inMenu) {
+            while (running) {
+                System.out.println("Enter physiotherapist name: ");
+                String physioName = scanner.nextLine();
+
+                ArrayList<Appointment> appointments = clinicData.getBookedAppointmentsByPhysiotherapistName(physioName);
+                if (appointments.isEmpty()) {
+                    System.out.println("No booked appointments found for physiotherapist name: " + physioName);
+                } else {
+                    printAppointments(appointments);
+                }
+                running = false;
+            }
+
+            System.out.println("\nPress 1 to: Search booked appointments by physiotherapist name again\n");
+            System.out.println("Press 2 to: Go to previous menu\n");
+
+            String input = scanner.nextLine();
+
+            switch (input) {
+                case "1":
+                    running = true;
+                    break;
+                case "2":
+                    inMenu = false;
+                    break;
+                default:
+                    System.out.println("Invalid input, please try again");
+            }
+        }
+    }
+
+    private void searchBookedAppointmentsByPatientIdMenu() {
+        boolean inMenu = true;
+        boolean running = true;
+
+        while (inMenu) {
+            while (running) {
+                System.out.println("Enter patient ID: ");
+                String patientId = scanner.nextLine();
+
+                ArrayList<Appointment> appointments = clinicData.getBookedAppointmentsByPatientId(patientId);
+                if (appointments.isEmpty()) {
+                    System.out.println("No booked appointments found for patient ID: " + patientId);
+                } else {
+                    printAppointments(appointments);
+                }
+                running = false;
+            }
+
+            System.out.println("\nPress 1 to: Search booked appointments by patient ID again\n");
+            System.out.println("Press 2 to: Go to previous menu\n");
+
+            String input = scanner.nextLine();
+
+            switch (input) {
+                case "1":
+                    running = true;
+                    break;
+                case "2":
+                    inMenu = false;
+                    break;
+                default:
+                    System.out.println("Invalid input, please try again");
+            }
+        }
+    }
+
+    private void bookAppointmentMenu() {
+        boolean inMenu = true;
+        boolean running = true;
+
+        while (inMenu) {
+            while (running) {
+                System.out.println("Enter patient ID:\n");
+                String patientId = scanner.nextLine();
+                System.out.println("Enter schedule ID:\n");
+                String scheduleId = scanner.nextLine();
+
+                try {
+                    Appointment apt = clinicData.bookAppointment(scheduleId, patientId);
+                    System.out.println("Appointment has been booked, booking id: " + apt.getBookingId());
+                    running = false;
+                } catch (Exception e) {
+                    System.out.println("\n" + e.getMessage() + ", try again\n");
+                    running = false;
+                }
+            }
+
+            System.out.println("\nPress 1 to: Book an appointment\n");
+            System.out.println("Press 2 to: Go to previous menu\n");
+
+            String input = scanner.nextLine();
+
+            switch (input) {
+                case "1":
+                    running = true;
+                    break;
+                case "2":
+                    inMenu = false;
+                    break;
+                default:
+                    System.out.println("Invalid input, please try again");
+            }
+        }
+    }
+
 
     private void cancelAppointmentMenu() {
         boolean inMenu = true;
@@ -382,10 +472,11 @@ public class App {
                     running = false;
                 } catch (Exception e) {
                     System.out.println("\n" + e.getMessage() + ", try again\n");
+                    running = false;
                 }
             }
 
-            System.out.println("\nPress 1 to: Cancel another appointment\n");
+            System.out.println("\nPress 1 to: Cancel an appointment\n");
             System.out.println("Press 2 to: Go to previous menu\n");
 
             String input = scanner.nextLine();
@@ -423,10 +514,51 @@ public class App {
                     running = false;
                 } catch (Exception e) {
                     System.out.println("\n" + e.getMessage() + ", try again\n");
+                    running = false;
                 }
             }
 
-            System.out.println("\nPress 1 to: Change another appointment\n");
+            System.out.println("\nPress 1 to: Change an appointment\n");
+            System.out.println("Press 2 to: Go to previous menu\n");
+
+            String input = scanner.nextLine();
+
+            switch (input) {
+                case "1":
+                    running = true;
+                    break;
+                case "2":
+                    inMenu = false;
+                    break;
+                default:
+                    System.out.println("Invalid input, please try again");
+            }
+
+        }
+    }
+
+    private void attendAppointmentMenu() {
+        boolean inMenu = true;
+        boolean running = true;
+
+        while (inMenu) {
+            while (running) {
+                System.out.println("Enter booking ID of appointment:\n");
+                String bookingId = scanner.nextLine();
+                System.out.println("Enter patient ID of appointment patient:\n");
+                String patientId = scanner.nextLine();
+
+                try {
+                    clinicData.attendAppointment(bookingId, patientId);
+                    System.out.println("Appointment has been attended, booking id: " + bookingId);
+                    running = false;
+                } catch (Exception e) {
+                    System.out.println("\n" + e.getMessage() + ", try again\n");
+                    running = false;
+                }
+            }
+
+            System.out.println("\nPress 1 to: Attend another appointment\n");
             System.out.println("Press 2 to: Go to previous menu\n");
 
             String input = scanner.nextLine();
