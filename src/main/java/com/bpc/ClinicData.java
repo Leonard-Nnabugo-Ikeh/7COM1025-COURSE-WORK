@@ -4,8 +4,6 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.stream.Collectors;
 
 public class ClinicData {
@@ -62,20 +60,12 @@ public class ClinicData {
         return this.appointments.stream().filter(appointment -> appointment.getPatientId().equals(patientId)).collect(Collectors.toCollection((ArrayList::new)));
     }
 
-    public ArrayList<Physiotherapist> getPhysiotherapists() {
-        return physiotherapists;
-    }
-
     public ArrayList<Patient> getPatients() {
         return patients;
     }
 
     public ArrayList<Appointment> getAppointments() {
         return appointments;
-    }
-
-    public int getTotalEverNumOfPatients() {
-        return totalEverNumOfPatients;
     }
 
     public Schedule getSchedule(String scheduleId) {
@@ -109,20 +99,14 @@ public class ClinicData {
         return this.appointments.stream().filter(a -> a.getBookingId().equals(bookingId)).findFirst().orElseThrow(() -> new IllegalArgumentException("Appointment is invalid"));
     }
 
-    public Appointment getAppointment(String dateTime, String physioId) {
-        return this.appointments.stream().filter(a -> a.getSchedule().getDateTime().equals(dateTime)).findFirst().orElseThrow(() -> new IllegalArgumentException("Appointment is invalid"));
-    }
-
     public ArrayList<Schedule> getAvailableAppointmentsByExpertise(String expertise) {
         ArrayList<Schedule> schedules = new ArrayList<>();
 
-        physiotherapists.forEach(p -> {
-            p.getTimetable().forEach(s -> {
-                if (!validation.appointmentIsBookedOrAttended(this.appointments, s.getScheduleId()) && s.getTreatment().getExpertise().equalsIgnoreCase(expertise)) {
-                    schedules.add(s);
-                }
-            });
-        });
+        physiotherapists.forEach(p -> p.getTimetable().forEach(s -> {
+            if (!validation.appointmentIsBookedOrAttended(this.appointments, s.getScheduleId()) && s.getTreatment().getExpertise().equalsIgnoreCase(expertise)) {
+                schedules.add(s);
+            }
+        }));
 
         return schedules;
     }
@@ -130,13 +114,11 @@ public class ClinicData {
     public ArrayList<Schedule> getAvailableAppointmentsByPhysiotherapistName(String physioFullName) {
         ArrayList<Schedule> schedules = new ArrayList<>();
 
-        physiotherapists.forEach(p -> {
-            p.getTimetable().forEach(s -> {
-                if (!validation.appointmentIsBookedOrAttended(this.appointments, s.getScheduleId()) && p.getFullName().equalsIgnoreCase(physioFullName)) {
-                    schedules.add(s);
-                }
-            });
-        });
+        physiotherapists.forEach(p -> p.getTimetable().forEach(s -> {
+            if (!validation.appointmentIsBookedOrAttended(this.appointments, s.getScheduleId()) && p.getFullName().equalsIgnoreCase(physioFullName)) {
+                schedules.add(s);
+            }
+        }));
 
         return schedules;
     }

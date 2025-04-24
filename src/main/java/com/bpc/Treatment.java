@@ -1,8 +1,8 @@
 package com.bpc;
 
 public class Treatment {
-    private String name;
-    private String expertise;
+    private final String name;
+    private final String expertise;
 
     Treatment(String name, String expertise) {
         this.name = name;
