@@ -8,23 +8,6 @@ public class App {
     ClinicData clinicData = new ClinicData();
     Utils utils = new Utils();
 
-    public App() {
-        clinicData.bookAppointment("schedule-1", "patient-1");
-        clinicData.bookAppointment("schedule-2", "patient-1");
-        clinicData.bookAppointment("schedule-3", "patient-3");
-        clinicData.bookAppointment("schedule-4", "patient-3");
-        clinicData.bookAppointment("schedule-8", "patient-8");
-        clinicData.bookAppointment("schedule-9", "patient-8");
-        clinicData.changeAppointment("booking-1", "patient-1", "schedule-5");
-        clinicData.changeAppointment("booking-6", "patient-8", "schedule-10");
-        clinicData.cancelAppointment("booking-3", "patient-3");
-        clinicData.bookAppointment("schedule-1", "patient-10");
-        clinicData.attendAppointment("booking-5", "patient-8");
-        clinicData.attendAppointment("booking-4", "patient-3");
-        clinicData.attendAppointment("booking-8", "patient-8");
-        clinicData.attendAppointment("booking-2", "patient-1");
-    }
-
     private void printSchedules(ArrayList<Schedule> schedules) {
         schedules.forEach(s -> {
             Physiotherapist physio = clinicData.getPhysiotherapist(s.getPhysioId());
@@ -185,33 +168,31 @@ public class App {
     }
 
     private void searchAndBookAppointmentMenu() {
-        boolean inMenu = true;
         boolean running = true;
 
-        while (inMenu) {
-            while (running) {
-                System.out.println("Press 0 to: Go to main menu\n");
-                System.out.println("Press 1 to: Search for available appointments by expertise\n");
-                System.out.println("Press 2 to: Search for available appointments by physiotherapist name\n");
-                System.out.println("Press 3 to: Book an available appointment\n");
+        while (running) {
+            System.out.println("Press 0 to: Go to main menu\n");
+            System.out.println("Press 1 to: Search for available appointments by expertise\n");
+            System.out.println("Press 2 to: Search for available appointments by physiotherapist name\n");
+            System.out.println("Press 3 to: Book an available appointment\n");
 
-                String input = scanner.nextLine();
+            String input = scanner.nextLine();
 
-                switch (input) {
-                    case "0":
-                        return;
-                    case "1":
-                        searchByExpertiseMenu();
-                        break;
-                    case "2":
-                        searchByPhysiotherapistNameMenu();
-                        break;
-                    case "3":
-                        bookAppointmentMenu();
-                        break;
-                    default:
-                        System.out.println("Invalid input, please try again");
-                }
+            switch (input) {
+                case "0":
+                    running = false;
+                    break;
+                case "1":
+                    searchByExpertiseMenu();
+                    break;
+                case "2":
+                    searchByPhysiotherapistNameMenu();
+                    break;
+                case "3":
+                    bookAppointmentMenu();
+                    break;
+                default:
+                    System.out.println("Invalid input, please try again");
             }
         }
     }
@@ -289,45 +270,43 @@ public class App {
     }
 
     private void searchAndCancelOrChangeAppointment() {
-        boolean inMenu = true;
         boolean running = true;
 
-        while (inMenu) {
-            while (running) {
-                System.out.println("Press 0 to: Go to main menu\n");
-                System.out.println("Press 1 to: Search for booked appointments by expertise\n");
-                System.out.println("Press 2 to: Search for booked appointments by physiotherapist name\n");
-                System.out.println("Press 3 to: Search for booked appointments by patient ID\n");
-                System.out.println("Press 4 to: Cancel a booked appointment\n");
-                System.out.println("Press 5 to: Change a booked appointment\n");
-                System.out.println("Press 6 to: Attend a booked appointment\n");
+        while (running) {
+            System.out.println("Press 0 to: Go to main menu\n");
+            System.out.println("Press 1 to: Search for booked appointments by expertise\n");
+            System.out.println("Press 2 to: Search for booked appointments by physiotherapist name\n");
+            System.out.println("Press 3 to: Search for booked appointments by patient ID\n");
+            System.out.println("Press 4 to: Cancel a booked appointment\n");
+            System.out.println("Press 5 to: Change a booked appointment\n");
+            System.out.println("Press 6 to: Attend a booked appointment\n");
 
-                String input = scanner.nextLine();
+            String input = scanner.nextLine();
 
-                switch (input) {
-                    case "0":
-                        return;
-                    case "1":
-                        searchBookedAppointmentsByExpertiseMenu();
-                        break;
-                    case "2":
-                        searchBookedAppointmentsByPhysiotherapistNameMenu();
-                        break;
-                    case "3":
-                        searchBookedAppointmentsByPatientIdMenu();
-                        break;
-                    case "4":
-                        cancelAppointmentMenu();
-                        break;
-                    case "5":
-                        changeAppointmentMenu();
-                        break;
-                    case "6":
-                        attendAppointmentMenu();
-                        break;
-                    default:
-                        System.out.println("Invalid input, please try again");
-                }
+            switch (input) {
+                case "0":
+                    running = false;
+                    break;
+                case "1":
+                    searchBookedAppointmentsByExpertiseMenu();
+                    break;
+                case "2":
+                    searchBookedAppointmentsByPhysiotherapistNameMenu();
+                    break;
+                case "3":
+                    searchBookedAppointmentsByPatientIdMenu();
+                    break;
+                case "4":
+                    cancelAppointmentMenu();
+                    break;
+                case "5":
+                    changeAppointmentMenu();
+                    break;
+                case "6":
+                    attendAppointmentMenu();
+                    break;
+                default:
+                    System.out.println("Invalid input, please try again");
             }
         }
     }
