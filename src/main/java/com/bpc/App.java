@@ -58,7 +58,7 @@ public class App {
                     searchAndBookAppointmentMenu();
                     break;
                 case "5":
-                    searchAndCancelOrChangeAppointment();
+                    searchAndCancelOrChangeAppointmentMenu();
                     break;
                 case "6":
                     System.out.println("---- Boost Physio Clinic Report ----\n");
@@ -269,7 +269,7 @@ public class App {
         }
     }
 
-    private void searchAndCancelOrChangeAppointment() {
+    private void searchAndCancelOrChangeAppointmentMenu() {
         boolean running = true;
 
         while (running) {
