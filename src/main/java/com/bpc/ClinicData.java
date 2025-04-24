@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.stream.Collectors;
 
 public class ClinicData {
@@ -11,6 +13,7 @@ public class ClinicData {
     private final ArrayList<Patient> patients = new ArrayList<>();
     private final ArrayList<Appointment> appointments = new ArrayList<>();
     private final Validation validation = new Validation();
+    private final Utils utils = new Utils();
     private int totalEverNumOfPatients = 0, totalEverNumOfAppointments = 0;
 
     ClinicData() {
@@ -213,6 +216,38 @@ public class ClinicData {
         this.totalEverNumOfAppointments++;
 
         return appointment;
+    }
+
+    public void printReport() {
+        this.physiotherapists.sort((o1, o2) -> {
+            int aNumberOfAttended = appointments.stream().filter(apt -> apt.getSchedule().getPhysioId().equals(o1.getId()) && apt.getStatus().equals("ATTENDED")).collect(Collectors.toCollection(ArrayList::new)).size();
+            int bNumberOfAttended = appointments.stream().filter(apt -> apt.getSchedule().getPhysioId().equals(o2.getId()) && apt.getStatus().equals("ATTENDED")).collect(Collectors.toCollection(ArrayList::new)).size();
+            return Integer.compare(bNumberOfAttended, aNumberOfAttended);
+        });
+
+        this.physiotherapists.forEach(p -> {
+            ArrayList<Appointment> physioAppointments = this.appointments.stream().filter(a -> a.getSchedule().getPhysioId().equals(p.getId())).collect(Collectors.toCollection(ArrayList::new));
+            int attended = 0;
+
+            System.out.println("-Physiotherapist: " + p.getFullName());
+            System.out.println("\n-Appointments: \n");
+            for (int i = 0; i < physioAppointments.size(); i++) {
+                Appointment apt = physioAppointments.get(i);
+                if (apt.getStatus().equals("ATTENDED")) attended++;
+                System.out.println((i + 1) + ". Treatment: " + apt.getSchedule().getTreatment().getName() + " | Patient: " + this.getPatient(apt.getPatientId()).getFullName() + " | Time: " + utils.formatToDisplayDate(apt.getSchedule().getDateTime()) + " | Status: " + apt.getStatus() + "\n");
+            }
+
+            int SN = physioAppointments.isEmpty() ? 1 : physioAppointments.size() + 1;
+            for (int i = 0; i < p.getTimetable().size(); i++) {
+                Schedule schedule = p.getTimetable().get(i);
+                if (this.appointments.stream().noneMatch(a -> a.getSchedule().getScheduleId().equals(schedule.getScheduleId()) && (a.getStatus().equals("BOOKED") || a.getStatus().equals("ATTENDED") || a.getStatus().equals("CANCELLED")))) {
+                    System.out.println(SN + ". Treatment: " + schedule.getTreatment().getName() + " | Time: " + utils.formatToDisplayDate(schedule.getDateTime()) + " | Status: NEVER BOOKED\n");
+                    SN++;
+                }
+            }
+            System.out.println("\n-Total number of appointments attended: " + attended);
+            System.out.println("\n------------------------------------------------------------------\n");
+        });
     }
 
     private void loadMockData() {

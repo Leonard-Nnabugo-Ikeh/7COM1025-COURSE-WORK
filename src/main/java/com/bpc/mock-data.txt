@@ -58,7 +58,7 @@ Timetable
 #- physio-3 / Osteopathy / Mobilisation of the spine and joints / 2025-02-03 10 / schedule-9
 #- physio-3 / Osteopathy / Cranial techniques / 2025-02-06 15 / schedule-10
 #- physio-3 / Osteopathy / Soft tissue therapy / 2025-02-15 09 / schedule-11
-#- physio-3 / Osteopathy / Mobilisation of the spine and joints / 2025-02-17 14 / schedule-2
+#- physio-3 / Osteopathy / Mobilisation of the spine and joints / 2025-02-17 14 / schedule-12
 
 #- physio-4 / Sports Therapy / Deep tissue massage / 2025-02-03 11 / schedule-13
 #- physio-4 / Chiropractic Care / Spinal adjustment / 2025-02-07 10 / schedule-14

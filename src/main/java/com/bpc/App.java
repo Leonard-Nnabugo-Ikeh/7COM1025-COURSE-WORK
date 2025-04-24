@@ -8,6 +8,23 @@ public class App {
     ClinicData clinicData = new ClinicData();
     Utils utils = new Utils();
 
+    public App() {
+        clinicData.bookAppointment("schedule-1", "patient-1");
+        clinicData.bookAppointment("schedule-2", "patient-1");
+        clinicData.bookAppointment("schedule-3", "patient-3");
+        clinicData.bookAppointment("schedule-4", "patient-3");
+        clinicData.bookAppointment("schedule-8", "patient-8");
+        clinicData.bookAppointment("schedule-9", "patient-8");
+        clinicData.changeAppointment("booking-1", "patient-1", "schedule-5");
+        clinicData.changeAppointment("booking-6", "patient-8", "schedule-10");
+        clinicData.cancelAppointment("booking-3", "patient-3");
+        clinicData.bookAppointment("schedule-1", "patient-10");
+        clinicData.attendAppointment("booking-5", "patient-8");
+        clinicData.attendAppointment("booking-4", "patient-3");
+        clinicData.attendAppointment("booking-8", "patient-8");
+        clinicData.attendAppointment("booking-2", "patient-1");
+    }
+
     private void printSchedules(ArrayList<Schedule> schedules) {
         schedules.forEach(s -> {
             Physiotherapist physio = clinicData.getPhysiotherapist(s.getPhysioId());
@@ -31,13 +48,16 @@ public class App {
     }
 
     public void startApp() {
-        while (true) {
+        boolean running = true;
+        while (running) {
+            System.out.println("--- Welcome to Boost Physio Clinic ---\n");
             System.out.println("--- Main Menu ---\n");
             System.out.println("Press 1 to: Add a patient\n");
             System.out.println("Press 2 to: Remove a patient\n");
             System.out.println("Press 3 to: View patients\n");
             System.out.println("Press 4 to: Search and book an available appointment\n");
             System.out.println("Press 5 to: Search and cancel/change/attend a booked appointment\n");
+            System.out.println("Press 6 to: Print report and exit\n");
 
             String input = scanner.nextLine();
 
@@ -56,6 +76,11 @@ public class App {
                     break;
                 case "5":
                     searchAndCancelOrChangeAppointment();
+                    break;
+                case "6":
+                    System.out.println("---- Boost Physio Clinic Report ----\n");
+                    clinicData.printReport();
+                    running = false;
                     break;
                 default:
                     System.out.println("Invalid input, please try again");
@@ -76,7 +101,7 @@ public class App {
                 fullName = scanner.nextLine();
                 System.out.println("Enter patient address:");
                 address = scanner.nextLine();
-                System.out.println("Enter patient phone:");
+                System.out.println("Enter patient phone number:");
                 phone = scanner.nextLine();
 
                 try {
