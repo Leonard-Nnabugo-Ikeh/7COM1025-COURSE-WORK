@@ -68,11 +68,6 @@ public class ClinicData {
         return appointments;
     }
 
-    public Schedule getSchedule(String scheduleId) {
-        Physiotherapist physiotherapist = this.physiotherapists.stream().filter(p -> p.getSchedule(scheduleId) != null).findFirst().orElseThrow(() -> new IllegalArgumentException("Schedule not found"));
-        return physiotherapist.getSchedule(scheduleId);
-    }
-
     public Physiotherapist getPhysiotherapist(String physioId) {
         return this.physiotherapists.stream().filter(p -> p.getId().equals(physioId)).findFirst().orElseThrow(() -> new IllegalArgumentException("Physiotherapist is invalid"));
     }
@@ -81,7 +76,8 @@ public class ClinicData {
         if (!validation.isPatientValid(this.patients, patientId))
             throw new IllegalArgumentException("Patient is invalid");
 
-        Schedule schedule = this.getSchedule(scheduleId); // throws error if schedule is not found
+        Schedule schedule = this.physiotherapists.stream().filter(p -> p.getSchedule(scheduleId) != null).findFirst().orElseThrow(() -> new IllegalArgumentException("Schedule not found")).getSchedule(scheduleId);
+        ; // throws error if schedule is not found
 
         //check if appointment is booked or attended
         boolean isBookedOrAttended = validation.appointmentIsBookedOrAttended(this.appointments, scheduleId);
