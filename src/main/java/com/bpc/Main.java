@@ -3,7 +3,7 @@ package com.bpc;
 public class Main {
 
     public static void main(String[] args) {
-        App menu = new App();
-        menu.startApp();
+        App app = new App();
+        app.startApp();
     }
 }
