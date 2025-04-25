@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="boot-physio-clinic:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/boot_physio_clinic_jar</output-path>
+    <root id="archive" name="boot-physio-clinic.jar">
+      <element id="module-output" name="boot-physio-clinic" />
+    </root>
+  </artifact>
+</component>
