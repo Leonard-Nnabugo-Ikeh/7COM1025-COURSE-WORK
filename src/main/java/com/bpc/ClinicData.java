@@ -1,9 +1,8 @@
 package com.bpc;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class ClinicData {
@@ -229,8 +228,8 @@ public class ClinicData {
     }
 
     private void loadMockData() {
-        String filePath = "src/main/java/com/bpc/mock-data.txt";
-        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+        String filePath = "mock-data.txt";
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(filePath))))) {
             String line;
             int physioNumber = 1;
             while ((line = br.readLine()) != null) {
