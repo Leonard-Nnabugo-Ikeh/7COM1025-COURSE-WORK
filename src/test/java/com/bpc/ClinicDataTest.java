@@ -112,7 +112,7 @@ class ClinicDataTest {
 
         //test when patient tries to book another appointment at the same date and time
         IllegalArgumentException ex5 = assertThrows(IllegalArgumentException.class, () -> instance.bookAppointment("schedule-9", "patient-1")); //patient 1 tries to book another appointment at the same date and time
-        assertEquals("Patient already booked for an appointment at chosen time", ex5.getMessage());
+        assertEquals("Patient already booked or attended an appointment at chosen time", ex5.getMessage());
     }
 
     @Test
