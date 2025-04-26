@@ -212,8 +212,12 @@ public class ClinicData {
             System.out.println("\n-Appointments: \n");
             for (int i = 0; i < physioAppointments.size(); i++) {
                 Appointment apt = physioAppointments.get(i);
-                if (apt.getStatus().equals("ATTENDED")) attended++;
-                System.out.println((i + 1) + ". Treatment: " + apt.getSchedule().getTreatment().getName() + " | Patient: " + this.getPatient(apt.getPatientId()).getFullName() + " | Time: " + utils.formatToDisplayDate(apt.getSchedule().getDateTime()) + " | Status: " + apt.getStatus() + "\n");
+                try {
+                    if (apt.getStatus().equals("ATTENDED")) attended++;
+                    System.out.println((i + 1) + ". Treatment: " + apt.getSchedule().getTreatment().getName() + " | Patient: " + this.getPatient(apt.getPatientId()).getFullName() + " | Time: " + utils.formatToDisplayDate(apt.getSchedule().getDateTime()) + " | Status: " + apt.getStatus() + "\n");
+                } catch (Exception e) {
+                    System.out.println((i + 1) + ". Treatment: " + apt.getSchedule().getTreatment().getName() + " | Patient: patient was removed" + " | Time: " + utils.formatToDisplayDate(apt.getSchedule().getDateTime()) + " | Status: " + apt.getStatus() + "\n");
+                }
             }
 
             int SN = physioAppointments.isEmpty() ? 1 : physioAppointments.size() + 1;
