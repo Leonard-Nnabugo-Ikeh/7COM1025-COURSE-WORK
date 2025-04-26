@@ -22,13 +22,15 @@ public class ClinicData {
     }
 
     public Patient addPatient(String fullName, String address, String phone) {
+        //run validations
         if (!validation.isFullNameValid(fullName)) throw new IllegalArgumentException("Full name is invalid");
         if (!validation.isAddressValid(address)) throw new IllegalArgumentException("Address is invalid");
         if (!validation.isPhoneNumberValid(phone)) throw new IllegalArgumentException("Phone number is invalid");
 
-        Patient pat = new Patient(fullName, address, phone, totalEverNumOfPatients);
-        this.patients.add(pat);
+        //add patient
         this.totalEverNumOfPatients++;
+        Patient pat = new Patient(fullName, address, phone, this.totalEverNumOfPatients);
+        this.patients.add(pat);
         return pat;
     }
 
@@ -85,7 +87,7 @@ public class ClinicData {
         //check if patient has already booked an appointment at that specific time of the date
         boolean patientBookedAtDatetime = validation.patientIsBookedAtDatetime(this.appointments, patientId, schedule.getDateTime());
         if (patientBookedAtDatetime)
-            throw new IllegalArgumentException("Patient already booked for an appointment at chosen time");
+            throw new IllegalArgumentException("Patient already booked or attended an appointment at chosen time");
 
         return schedule;
     }
