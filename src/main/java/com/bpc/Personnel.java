@@ -30,7 +30,7 @@ public class Personnel {
         return phone;
     }
 
-    private String generatePersonnelId(String personnelType, int totalEverNumOfPersonnel) {
+    public String generatePersonnelId(String personnelType, int totalEverNumOfPersonnel) {
         if (personnelType.equals("physiotherapist")) {
             return "physio-" + (totalEverNumOfPersonnel);
         }
